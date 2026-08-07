@@ -622,3 +622,851 @@ Log analysis is a fundamental skill for Linux troubleshooting and operations.
 * Understanding the purpose of each top-level directory is essential for Linux administration, troubleshooting, automation, and platform engineering.
 
 ---
+
+# Module 2 - Lesson 2: Command-Line Navigation
+
+## The Linux Shell
+
+The **shell** is a command interpreter that provides an interface between the user and the operating system.
+
+When you type a command such as:
+
+```bash
+ls
+```
+
+the shell interprets the command and executes it.
+
+The shell is therefore one of the primary interfaces used to interact with a Linux system.
+
+Common Linux shells include:
+
+* `sh`
+* `bash`
+* `zsh`
+* `fish`
+* `ksh`
+
+### Bash
+
+**Bash** stands for **Bourne Again Shell**.
+
+It is one of the most widely used shells in Linux environments and provides features such as:
+
+* Command execution
+* Command history
+* Shell scripting
+* Variables
+* Pipes
+* Redirection
+* Command substitution
+* Tab completion
+
+### Zsh
+
+**Zsh** is another popular Unix shell with extensive customization and plugin support.
+
+The shell available on a system depends on the distribution and user configuration.
+
+---
+
+# Navigating Directories
+
+The `cd` command is used to change the current working directory.
+
+For example:
+
+```bash
+cd /var/log
+```
+
+After changing directories, `pwd` can be used to verify the current location:
+
+```bash
+pwd
+```
+
+Example output:
+
+```text
+/var/log
+```
+
+The current working directory is important because relative paths are interpreted from this location.
+
+---
+
+# Absolute Paths
+
+An **absolute path** specifies the complete location of a file or directory starting from `/`.
+
+For example:
+
+```bash
+cd /var/log
+```
+
+This path is valid regardless of the directory you are currently in.
+
+Another example:
+
+```bash
+cd /usr/local/bin
+```
+
+Absolute paths always start with `/`.
+
+---
+
+# Relative Paths
+
+A **relative path** is interpreted from the current working directory.
+
+Suppose you are currently in:
+
+```text
+/var
+```
+
+You can enter the `log` directory using:
+
+```bash
+cd log
+```
+
+There is no need to specify `/var/log` because `log` is being resolved relative to the current directory.
+
+Relative paths are particularly useful when navigating nearby directories.
+
+---
+
+# Current and Parent Directory References
+
+Two special path references are especially important when working with relative paths.
+
+## Current Directory: `.`
+
+The single dot represents the current directory:
+
+```text
+.
+```
+
+For example:
+
+```bash
+cd .
+```
+
+does not change the current location.
+
+The `.` reference is also useful when specifying the current directory as part of another command.
+
+---
+
+## Parent Directory: `..`
+
+The double dot represents the parent directory:
+
+```text
+..
+```
+
+For example:
+
+```bash
+cd ..
+```
+
+moves one directory level up.
+
+If you are currently in:
+
+```text
+/var/log
+```
+
+running:
+
+```bash
+cd ..
+```
+
+takes you to:
+
+```text
+/var
+```
+
+You can continue moving upward:
+
+```bash
+cd ..
+```
+
+which takes you to:
+
+```text
+/
+```
+
+---
+
+# Combining Relative Paths
+
+Relative paths can combine `.` and `..` references.
+
+For example:
+
+```bash
+cd ../../etc
+```
+
+means:
+
+1. Move to the parent directory.
+2. Move to its parent directory.
+3. Enter the `etc` directory.
+
+This allows you to navigate through the filesystem without specifying the complete absolute path.
+
+---
+
+# Switching to the Previous Directory
+
+The following command returns to the previously visited directory:
+
+```bash
+cd -
+```
+
+For example:
+
+```bash
+cd /var/log
+cd /tmp
+cd -
+```
+
+The final command switches back to:
+
+```text
+/var/log
+```
+
+This is useful when working alternately between two locations.
+
+---
+
+# Returning to the Home Directory
+
+Running `cd` without specifying a path returns to the current user's home directory:
+
+```bash
+cd
+```
+
+This provides a convenient way to return to a known location without typing the full path.
+
+---
+
+# Listing Directory Contents
+
+The `ls` command lists files and directories.
+
+```bash
+ls
+```
+
+A path can also be provided:
+
+```bash
+ls /var/log
+```
+
+The `ls` command supports several useful options.
+
+---
+
+## Long Format
+
+Use `-l` to display detailed information:
+
+```bash
+ls -l
+```
+
+The output includes information such as:
+
+* File type
+* Permissions
+* Number of links
+* Owner
+* Group
+* Size
+* Modification time
+* Name
+
+For example:
+
+```text
+drwxr-xr-x 2 root root 4096 Aug 7 10:00 logs
+```
+
+The first character identifies the file type, while the remaining characters contain permission information.
+
+File permissions will be covered in more detail later.
+
+---
+
+# Human-Readable Sizes
+
+The `-h` option displays file sizes in a human-readable format.
+
+For example:
+
+```bash
+ls -lh
+```
+
+Instead of displaying only raw byte counts, sizes can be shown using units such as:
+
+```text
+KB
+MB
+GB
+TB
+```
+
+This option is particularly useful when inspecting files with large sizes.
+
+---
+
+# Hidden Files
+
+Linux uses a simple convention for hidden files: their names begin with a dot.
+
+Examples include:
+
+```text
+.bashrc
+.bash_history
+.profile
+```
+
+A standard `ls` command does not display these files:
+
+```bash
+ls
+```
+
+Use the `-a` option to include hidden files:
+
+```bash
+ls -a
+```
+
+The `-a` option means **all**, including hidden entries.
+
+---
+
+# Combining `ls` Options
+
+Multiple options can be combined.
+
+For example:
+
+```bash
+ls -la
+```
+
+displays:
+
+* Detailed information
+* Hidden files
+
+You can also combine all three options discussed above:
+
+```bash
+ls -lah
+```
+
+This provides a detailed listing that includes hidden files and displays sizes in a human-readable format.
+
+This is one of the most useful forms of `ls` when inspecting a directory:
+
+```bash
+ls -lah
+```
+
+---
+
+# Command History
+
+The shell keeps a history of previously executed commands.
+
+To display the command history:
+
+```bash
+history
+```
+
+The history can also be accessed interactively using the arrow keys:
+
+* `↑` — previous command
+* `↓` — next command
+
+For example, pressing `↑` repeatedly allows you to navigate through commands that were previously executed.
+
+This is useful when repeating or modifying commands without typing them again.
+
+---
+
+# Clearing the Terminal
+
+The `clear` command clears the visible contents of the terminal:
+
+```bash
+clear
+```
+
+The `Ctrl+L` shortcut commonly provides the same functionality in an interactive shell.
+
+Clearing the terminal does not delete command history or terminate running processes. It only clears the current visible screen.
+
+---
+
+# Tab Completion
+
+The `Tab` key provides command and path completion.
+
+For example, instead of typing:
+
+```bash
+cd /var/log
+```
+
+you can begin typing:
+
+```bash
+cd /var/lo
+```
+
+and press `Tab`.
+
+If the path is unambiguous, the shell can automatically complete it:
+
+```bash
+cd /var/log
+```
+
+Tab completion is useful because it:
+
+* Saves time
+* Reduces typing
+* Prevents spelling mistakes
+* Makes long paths easier to work with
+
+It can also be used to complete commands and filenames.
+
+---
+
+# Practical Navigation Example
+
+Consider the following sequence:
+
+```bash
+cd /
+ls
+cd var
+pwd
+```
+
+The current directory is now:
+
+```text
+/var
+```
+
+You can then enter a child directory using a relative path:
+
+```bash
+cd log
+```
+
+The current directory becomes:
+
+```text
+/var/log
+```
+
+To return to `/var`:
+
+```bash
+cd ..
+```
+
+To return to `/`:
+
+```bash
+cd ..
+```
+
+Alternatively, you could use an absolute path at any point:
+
+```bash
+cd /var/log
+```
+
+Or return directly to the previous location:
+
+```bash
+cd -
+```
+
+This demonstrates the difference between absolute and relative navigation.
+
+---
+
+# Practical Command Reference
+
+| Command     | Description                                                |
+| ----------- | ---------------------------------------------------------- |
+| `cd <path>` | Change the current directory                               |
+| `cd`        | Return to the user's home directory                        |
+| `cd ..`     | Move to the parent directory                               |
+| `cd .`      | Reference the current directory                            |
+| `cd -`      | Return to the previous directory                           |
+| `pwd`       | Display the current working directory                      |
+| `ls`        | List directory contents                                    |
+| `ls -l`     | Display detailed file information                          |
+| `ls -a`     | Include hidden files                                       |
+| `ls -h`     | Display human-readable sizes                               |
+| `ls -lh`    | Detailed listing with human-readable sizes                 |
+| `ls -lah`   | Detailed listing including hidden files and readable sizes |
+| `clear`     | Clear the terminal screen                                  |
+| `history`   | Display previously executed commands                       |
+
+---
+
+# Key Concepts
+
+By the end of this lesson, you should be comfortable with:
+
+* Understanding the role of the Linux shell
+* Using `cd` to navigate directories
+* Checking your current location with `pwd`
+* Using absolute paths
+* Using relative paths
+* Understanding `.` and `..`
+* Moving to the previous directory with `cd -`
+* Returning to the home directory with `cd`
+* Using `ls` to inspect directories
+* Reading detailed `ls -l` output
+* Displaying hidden files with `ls -a`
+* Using human-readable sizes with `ls -h`
+* Combining command-line options
+* Using `history`
+* Clearing the terminal
+* Using Tab completion
+
+The goal of this lesson is not simply to memorize commands. Practice navigating the filesystem from the terminal and use both absolute and relative paths until the behavior becomes intuitive.
+
+---
+
+# Module 2 - Lesson 3: File and Directory Management
+
+## Creating Directories
+
+In Linux, the correct terminology is **directory**, rather than folder.
+
+To create a directory, use the `mkdir` command:
+
+```bash
+mkdir <directory>
+```
+
+For example:
+
+```bash
+mkdir giropops
+```
+
+Verify that the directory was created:
+
+```bash
+ls
+```
+
+Every directory automatically contains two special entries:
+
+* `.` — refers to the current directory.
+* `..` — refers to the parent directory.
+
+These references can be used when navigating the filesystem.
+
+---
+
+## Creating Nested Directories
+
+By default, `mkdir` creates only the directory specified in the command. If the parent directory does not exist, the command fails.
+
+For example:
+
+```bash
+mkdir products/checkout
+```
+
+If `products` does not exist, the command will fail.
+
+Use the `-p` option to create the required parent directories automatically:
+
+```bash
+mkdir -p products/checkout
+```
+
+This creates the entire directory hierarchy:
+
+```text
+products/
+└── checkout/
+```
+
+The `-p` option is particularly useful when creating multiple levels of a directory structure at once.
+
+---
+
+## Creating Empty Files
+
+The `touch` command can be used to create an empty file:
+
+```bash
+touch <filename>
+```
+
+For example:
+
+```bash
+touch strigos
+```
+
+You can also specify a complete path:
+
+```bash
+touch giropops/products/checkout/strigos
+```
+
+If the file does not exist, `touch` creates an empty file.
+
+A simplified structure would then look like:
+
+```text
+giropops/
+└── products/
+    └── checkout/
+        └── strigos
+```
+
+---
+
+## Copying Files and Directories
+
+The `cp` command is used to copy files and directories.
+
+### Copying a File
+
+The basic syntax is:
+
+```bash
+cp <source> <destination>
+```
+
+For example:
+
+```bash
+cp giropops/products/checkout/strigos giropops/
+```
+
+The original file remains in its original location.
+
+### Copying Directories
+
+To copy a directory and its contents, use the `-R` option:
+
+```bash
+cp -R <source> <destination>
+```
+
+For example:
+
+```bash
+cp -R giropops/products/checkout .
+```
+
+The `-R` option means **recursive**. It allows `cp` to traverse the source directory and copy its contents.
+
+The key difference is:
+
+* `cp` — copies files.
+* `cp -R` — recursively copies directories and their contents.
+
+---
+
+## Moving Files and Directories
+
+The `mv` command moves files or directories:
+
+```bash
+mv <source> <destination>
+```
+
+For example:
+
+```bash
+mv giropops/products/checkout/strigos .
+```
+
+Unlike `cp`, `mv` removes the item from its original location after moving it.
+
+### Renaming Files
+
+`mv` is also used to rename files and directories.
+
+For example:
+
+```bash
+mv strigos giros
+```
+
+The file previously named `strigos` is now named `giros`.
+
+This works because, in Linux, renaming an item is essentially changing its directory entry rather than using a separate rename command.
+
+---
+
+## Removing Files and Directories
+
+The `rm` command removes files:
+
+```bash
+rm <filename>
+```
+
+For example:
+
+```bash
+rm giros
+```
+
+To remove a directory, use `rmdir`:
+
+```bash
+rmdir <directory>
+```
+
+However, `rmdir` can only remove **empty directories**.
+
+For example:
+
+```bash
+rmdir checkout
+```
+
+If the directory contains files or subdirectories, the command fails.
+
+---
+
+## Removing Directories Recursively
+
+To remove a directory and everything inside it, use:
+
+```bash
+rm -R <directory>
+```
+
+The `-R` option means **recursive**.
+
+For example:
+
+```bash
+rm -R checkout
+```
+
+This recursively removes the directory and its contents.
+
+### Force Removal
+
+The `-f` option means **force**:
+
+```bash
+rm -Rf <directory>
+```
+
+or:
+
+```bash
+rm -rf <directory>
+```
+
+This combination is commonly used to recursively remove files and directories without prompting for confirmation.
+
+> **Warning:** `rm -rf` is a potentially destructive command. Always verify the target path before executing it, especially when operating as `root`.
+
+---
+
+## The Danger of `rm -rf /`
+
+The root directory `/` represents the top of the Linux filesystem hierarchy.
+
+Therefore, commands that recursively target `/` can potentially remove the entire filesystem.
+
+For example:
+
+```bash
+rm -rf /
+```
+
+This should **never** be executed on a real system.
+
+Modern versions of GNU `rm` normally include safeguards such as `--preserve-root`, which prevents accidental recursive deletion of `/`. However, these protections should not be treated as a substitute for verifying commands before execution.
+
+When working as `root`, destructive commands require particular care because the root user has unrestricted access to the system.
+
+---
+
+## Command Summary
+
+| Command    | Purpose                                                 |
+| ---------- | ------------------------------------------------------- |
+| `mkdir`    | Create a directory                                      |
+| `mkdir -p` | Create a directory hierarchy, including missing parents |
+| `touch`    | Create an empty file                                    |
+| `cp`       | Copy files                                              |
+| `cp -R`    | Recursively copy directories                            |
+| `mv`       | Move files or directories                               |
+| `mv`       | Rename files or directories                             |
+| `rm`       | Remove files                                            |
+| `rmdir`    | Remove empty directories                                |
+| `rm -R`    | Recursively remove directories and their contents       |
+| `rm -f`    | Force removal without confirmation                      |
+| `rm -rf`   | Recursively and forcibly remove files and directories   |
+
+## Practice
+
+Practice these commands by creating and manipulating your own directory structure.
+
+For example:
+
+```bash
+mkdir -p ~/lab/products/checkout
+touch ~/lab/products/checkout/example.txt
+cp ~/lab/products/checkout/example.txt ~/lab/
+mv ~/lab/example.txt ~/lab/renamed.txt
+rm ~/lab/renamed.txt
+```
+
+Then create additional directories and files and experiment with copying, moving, renaming, and removing them.
+
+The goal is to become comfortable manipulating the Linux filesystem from the command line.
+
+---
