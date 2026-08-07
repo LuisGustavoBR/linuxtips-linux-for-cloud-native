@@ -1470,3 +1470,682 @@ Then create additional directories and files and experiment with copying, moving
 The goal is to become comfortable manipulating the Linux filesystem from the command line.
 
 ---
+
+# Module 2 - Lesson 4: Terminal Shortcuts, Aliases, and Bash Configuration
+
+## 1. Terminal Shortcuts
+
+Now that you already know how to navigate the Linux filesystem and manipulate files and directories, it is time to learn some shortcuts that make working in the terminal much faster.
+
+These shortcuts are used constantly in the daily work of Linux administrators, DevOps engineers, and developers.
+
+---
+
+## 2. Ctrl + R - Search the Command History
+
+`Ctrl + R` allows you to search for commands that were previously executed.
+
+Press:
+
+```text
+Ctrl + R
+```
+
+The Bash shell enters reverse search mode.
+
+For example, if you previously executed:
+
+```bash
+pwd
+cd /var/log
+ls -lha
+```
+
+and then press `Ctrl + R` and start typing:
+
+```text
+pwd
+```
+
+the terminal will find the corresponding command in the history.
+
+You can press `Ctrl + R` repeatedly to search through previous matches.
+
+This is extremely useful when you have previously executed a long command and do not want to type it again.
+
+---
+
+## 3. Ctrl + W - Delete a Word
+
+`Ctrl + W` removes the word immediately before the current cursor position.
+
+For example:
+
+```bash
+cp file.txt /var/tmp/file.txt
+```
+
+If the cursor is at the end of the line and you press:
+
+```text
+Ctrl + W
+```
+
+the last word will be removed.
+
+This is useful for quickly correcting commands without having to delete characters one by one.
+
+---
+
+## 4. Ctrl + U - Delete the Line
+
+`Ctrl + U` removes the content of the command line from the cursor position toward the beginning of the line.
+
+For example:
+
+```bash
+cp file.txt /var/tmp/file.txt
+```
+
+If you want to remove the command you are currently typing and start over, you can use:
+
+```text
+Ctrl + U
+```
+
+---
+
+## 5. Ctrl + A and Ctrl + E
+
+Two simple but extremely useful shortcuts are:
+
+### Ctrl + A
+
+Moves the cursor to the beginning of the command line.
+
+```text
+Ctrl + A
+```
+
+### Ctrl + E
+
+Moves the cursor to the end of the command line.
+
+```text
+Ctrl + E
+```
+
+These shortcuts are particularly useful when working with long commands.
+
+---
+
+## 6. Ctrl + C - Interrupt a Command
+
+`Ctrl + C` is used to interrupt a command or process currently running in the terminal.
+
+For example, if a command keeps running continuously or takes longer than expected, you can press:
+
+```text
+Ctrl + C
+```
+
+The process receives an interrupt signal and the terminal normally returns to the shell prompt.
+
+This is one of the shortcuts you will use frequently in your daily work.
+
+---
+
+## 7. Ctrl + D - Exit the Shell
+
+`Ctrl + D` has another important function.
+
+When used at an interactive shell prompt, it sends an EOF (End Of File) indication and normally terminates the current shell session.
+
+For example:
+
+```text
+Ctrl + D
+```
+
+is a common way to exit a shell session.
+
+It can also be useful when leaving a session started under another user.
+
+---
+
+# 8. Aliases
+
+Now we can introduce a very useful shell feature: aliases.
+
+An alias is essentially a shortcut or alternative name for a command.
+
+Imagine that you frequently use:
+
+```bash
+ls -lha
+```
+
+You can create an alias called `ll`:
+
+```bash
+alias ll='ls -lha'
+```
+
+Now you can simply run:
+
+```bash
+ll
+```
+
+and the shell will execute:
+
+```bash
+ls -lha
+```
+
+Aliases are commonly used to create shortcuts for long or frequently used commands.
+
+---
+
+## 9. Viewing Aliases
+
+To display the aliases currently configured in your shell session, run:
+
+```bash
+alias
+```
+
+The shell will display the available aliases.
+
+Some Linux distributions already provide aliases by default.
+
+For example:
+
+```bash
+alias ll='ls -lha'
+```
+
+or:
+
+```bash
+alias ls='ls --color=auto'
+```
+
+This explains why the same command may behave slightly differently depending on the Linux distribution or the user's configuration.
+
+---
+
+## 10. Aliases Are Temporary
+
+There is an important characteristic of aliases:
+
+```bash
+alias ll='ls -lha'
+```
+
+creates the alias only for the current shell session.
+
+If you log out and start a new session, the alias may disappear.
+
+To make the configuration persistent, we need to place it in a shell configuration file.
+
+This is where `.bashrc` becomes important.
+
+---
+
+# 11. Bash and Its Configuration Files
+
+Bash is one of the most commonly used shells on Linux systems.
+
+It uses several files to configure the user's environment.
+
+Some important files include:
+
+```text
+.bash_history
+.bashrc
+.bash_logout
+```
+
+Each file has a different purpose.
+
+---
+
+## 12. `.bash_history`
+
+The file:
+
+```text
+~/.bash_history
+```
+
+is used by Bash to store the command history.
+
+This allows previously executed commands to be retrieved later.
+
+For example, features such as `Ctrl + R` use the command history to find previously executed commands.
+
+---
+
+## 13. `.bashrc`
+
+The file:
+
+```text
+~/.bashrc
+```
+
+is commonly used to configure an interactive Bash environment.
+
+It can contain:
+
+* aliases
+* environment variables
+* shell functions
+* prompt configuration
+* other Bash customizations
+
+For example:
+
+```bash
+alias ll='ls -lha'
+```
+
+can be placed inside `.bashrc`.
+
+This allows the alias to be loaded again when a new Bash session starts.
+
+---
+
+## 14. `.bash_logout`
+
+The file:
+
+```text
+~/.bash_logout
+```
+
+can contain commands that should be executed when a Bash login session is terminated.
+
+It can be used to perform specific actions during logout.
+
+---
+
+# 15. `echo`
+
+The `echo` command prints text to the terminal.
+
+For example:
+
+```bash
+echo "Hello, Linux!"
+```
+
+Output:
+
+```text
+Hello, Linux!
+```
+
+However, `echo` becomes even more useful when combined with output redirection.
+
+---
+
+# 16. Redirection with `>`
+
+The:
+
+```text
+>
+```
+
+operator redirects command output to a file.
+
+For example:
+
+```bash
+echo "Hello" > file.txt
+```
+
+This creates `file.txt` containing:
+
+```text
+Hello
+```
+
+There is an important detail:
+
+> `>` overwrites the existing content of the file.
+
+For example:
+
+```bash
+echo "First line" > file.txt
+echo "Second line" > file.txt
+```
+
+After these commands, the file will contain only:
+
+```text
+Second line
+```
+
+The first line was overwritten.
+
+---
+
+# 17. Redirection with `>>`
+
+When you want to append content to the end of a file, use:
+
+```text
+>>
+```
+
+For example:
+
+```bash
+echo "First line" > file.txt
+echo "Second line" >> file.txt
+```
+
+The file will now contain:
+
+```text
+First line
+Second line
+```
+
+The difference is important:
+
+```text
+>   overwrite
+>>  append
+```
+
+Be especially careful with this when working with configuration files.
+
+---
+
+# 18. Adding an Alias to `.bashrc`
+
+We can combine everything we have learned so far.
+
+Imagine that we want to permanently add:
+
+```bash
+alias ll='ls -lha'
+```
+
+to `.bashrc`.
+
+We can use:
+
+```bash
+echo "alias ll='ls -lha'" >> ~/.bashrc
+```
+
+The `echo` command generates the text and `>>` appends that text to the end of the file.
+
+The alias is now stored in `.bashrc`.
+
+---
+
+# 19. `cat`
+
+The `cat` command can be used to display the contents of a file.
+
+For example:
+
+```bash
+cat ~/.bashrc
+```
+
+This displays the contents of `.bashrc` in the terminal.
+
+It is useful for checking whether a configuration was actually added to the file.
+
+For example:
+
+```bash
+cat ~/.bashrc
+```
+
+may show:
+
+```bash
+alias ll='ls -lha'
+```
+
+---
+
+# 20. `source`
+
+After modifying a configuration file, there is an important detail:
+
+The change has been saved to the file, but the current shell may not have loaded the new configuration yet.
+
+To reload the file without logging out and back in, use:
+
+```bash
+source ~/.bashrc
+```
+
+An equivalent syntax is:
+
+```bash
+. ~/.bashrc
+```
+
+`source` reads and executes the contents of the file in the current shell session.
+
+For example:
+
+```bash
+echo "alias ll='ls -lha'" >> ~/.bashrc
+source ~/.bashrc
+```
+
+The alias will now be available in the current session:
+
+```bash
+ll
+```
+
+---
+
+# 21. `sudo`
+
+Another important Linux concept is `sudo`.
+
+Certain operations require administrative privileges.
+
+The `root` user has elevated privileges and can perform operations that regular users cannot.
+
+`sudo` allows an authorized user to execute a command with administrative privileges.
+
+For example:
+
+```bash
+sudo apt update
+```
+
+In this case, `apt update` is executed with administrative privileges.
+
+This is different from simply running:
+
+```bash
+apt update
+```
+
+as a regular user without the required permissions.
+
+---
+
+## 22. Why Use `sudo`?
+
+The main idea is to avoid working as `root` all the time.
+
+Working as `root` increases the risk of accidentally performing destructive operations.
+
+With `sudo`, you request elevated privileges only when they are actually required.
+
+A common workflow is:
+
+```text
+regular user
+    |
+    v
+sudo command
+    |
+    v
+command executed with administrative privileges
+```
+
+We will explore permissions and `sudo` configuration in more detail later in the training.
+
+---
+
+# 23. Aliases with `sudo`
+
+We can also create aliases that execute commands using `sudo`.
+
+For example:
+
+```bash
+alias update='sudo apt update'
+```
+
+Now:
+
+```bash
+update
+```
+
+will be equivalent to:
+
+```bash
+sudo apt update
+```
+
+This can be convenient for commands that you use frequently.
+
+However, if you want the alias to remain available after logging out, it needs to be configured in `.bashrc`.
+
+---
+
+# 24. Alpine vs Debian
+
+During the training, we may work with different Linux distributions.
+
+For example:
+
+* Alpine Linux
+* Debian
+
+The fundamental Linux concepts remain the same, but some implementation details can differ.
+
+One example is the default shell.
+
+Alpine commonly uses the BusyBox `ash` shell, while Debian commonly uses Bash.
+
+This means that certain shell features, aliases, and configuration files may vary depending on the environment.
+
+It is therefore important to understand:
+
+```text
+Which Linux distribution am I using?
+Which shell am I using?
+Which user am I using?
+```
+
+These details can affect how certain commands behave.
+
+---
+
+# 25. Practice
+
+Now it is time to put everything into practice.
+
+Test the following shortcuts:
+
+```text
+Ctrl + R
+Ctrl + W
+Ctrl + U
+Ctrl + A
+Ctrl + E
+Ctrl + C
+Ctrl + D
+```
+
+Then practice aliases:
+
+```bash
+alias ll='ls -lha'
+alias
+ll
+```
+
+Create a test file:
+
+```bash
+echo "First line" > test.txt
+```
+
+Append another line:
+
+```bash
+echo "Second line" >> test.txt
+```
+
+Check the result:
+
+```bash
+cat test.txt
+```
+
+Then practice Bash configuration:
+
+```bash
+echo "alias test='echo It works!'" >> ~/.bashrc
+source ~/.bashrc
+```
+
+Run:
+
+```bash
+test
+```
+
+The goal of this lesson is not simply to memorize commands.
+
+You should start using these features naturally while working in the terminal.
+
+---
+
+# Lesson 4 Summary
+
+| Resource        | Purpose                                         |
+| --------------- | ----------------------------------------------- |
+| `Ctrl + R`      | Search the command history                      |
+| `Ctrl + W`      | Delete a word                                   |
+| `Ctrl + U`      | Delete the command line                         |
+| `Ctrl + A`      | Move to the beginning of the line               |
+| `Ctrl + E`      | Move to the end of the line                     |
+| `Ctrl + C`      | Interrupt a running command                     |
+| `Ctrl + D`      | Exit the shell/session                          |
+| `alias`         | Create command shortcuts                        |
+| `.bash_history` | Store Bash command history                      |
+| `.bashrc`       | Configure the Bash environment                  |
+| `.bash_logout`  | Configure actions performed during logout       |
+| `echo`          | Print text                                      |
+| `>`             | Redirect output and overwrite                   |
+| `>>`            | Redirect output and append                      |
+| `cat`           | Display file contents                           |
+| `source`        | Reload a configuration file                     |
+| `sudo`          | Execute commands with administrative privileges |
+
+The goal is to become faster and more comfortable in the Linux terminal while learning how to customize your shell environment.
+
+---
