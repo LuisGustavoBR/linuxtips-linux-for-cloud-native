@@ -2149,3 +2149,640 @@ You should start using these features naturally while working in the terminal.
 The goal is to become faster and more comfortable in the Linux terminal while learning how to customize your shell environment.
 
 ---
+
+# Module 2 - Lesson 5: Archiving and Compression
+
+## 1. Archiving vs. Compression
+
+In Linux, it is important to understand the difference between **archiving** and **compression**.
+
+### Archiving
+
+Archiving means putting multiple files and directories into a single package without necessarily reducing their size.
+
+For example:
+
+```bash
+tar
+```
+
+A tar archive can contain an entire directory structure while preserving the files inside it.
+
+### Compression
+
+Compression reduces the amount of disk space required to store data.
+
+Common compression formats in Linux include:
+
+* GZIP - `.gz`
+* BZIP2 - `.bz2`
+
+These concepts are often combined:
+
+```text
+Archive + Compression = .tar.gz
+Archive + Compression = .tar.bz2
+```
+
+---
+
+# 2. TAR
+
+`tar` is one of the most important commands for working with archives in Linux.
+
+It can be used to:
+
+* Create archives
+* Extract archives
+* List archive contents
+* Combine archiving with compression
+
+A common TAR syntax is:
+
+```bash
+tar [options] archive_name files
+```
+
+Some options are especially important and should be memorized.
+
+| Option | Meaning                  |
+| ------ | ------------------------ |
+| `c`    | Create an archive        |
+| `x`    | Extract an archive       |
+| `t`    | List archive contents    |
+| `v`    | Verbose output           |
+| `f`    | Specify the archive file |
+| `z`    | Use GZIP compression     |
+| `j`    | Use BZIP2 compression    |
+
+---
+
+# 3. Creating a TAR Archive
+
+Suppose we have a project with the following structure:
+
+```text
+project/
+├── backend/
+├── frontend/
+└── infra/
+    └── iac/
+```
+
+To create a regular TAR archive:
+
+```bash
+tar -cvf backup.tar project/
+```
+
+The options mean:
+
+* `c` - create
+* `v` - verbose
+* `f` - specify the output file
+
+The result is:
+
+```text
+backup.tar
+```
+
+This archive is **not compressed**.
+
+It simply packages the files into a single archive.
+
+---
+
+# 4. Creating a TAR.GZ Archive
+
+To create an archive compressed with GZIP:
+
+```bash
+tar -czvf backup.tar.gz project/
+```
+
+The important difference is the `z` option:
+
+```text
+c = create
+z = GZIP compression
+v = verbose
+f = file
+```
+
+The result is:
+
+```text
+backup.tar.gz
+```
+
+This means:
+
+```text
+project/
+    ↓
+TAR archive
+    ↓
+GZIP compression
+    ↓
+backup.tar.gz
+```
+
+The `.tar` part represents the archive, while `.gz` represents the compression.
+
+---
+
+# 5. TAR File Size
+
+A TAR archive without compression can be significantly larger than a compressed TAR archive.
+
+For example:
+
+```text
+backup.tar      -> archive only
+backup.tar.gz   -> archive + GZIP compression
+```
+
+The exact difference depends on the data being compressed.
+
+Some files compress very well, while others are already compressed and may not become significantly smaller.
+
+---
+
+# 6. Listing the Contents of an Archive
+
+The `t` option lists the contents of a TAR archive without extracting it.
+
+For a regular TAR archive:
+
+```bash
+tar -tvf backup.tar
+```
+
+For a GZIP-compressed TAR archive:
+
+```bash
+tar -tzvf backup.tar.gz
+```
+
+The important option here is:
+
+```text
+t = list contents
+```
+
+This is useful when you want to inspect an archive before extracting it.
+
+---
+
+# 7. Extracting a TAR.GZ Archive
+
+To extract a GZIP-compressed TAR archive:
+
+```bash
+tar -xzvf backup.tar.gz
+```
+
+The options mean:
+
+```text
+x = extract
+z = GZIP
+v = verbose
+f = file
+```
+
+The archive contents will be extracted into the current directory.
+
+---
+
+# 8. Extracting to a Specific Directory
+
+You can specify where the archive should be extracted.
+
+For example:
+
+```bash
+tar -xzvf backup.tar.gz -C backup/
+```
+
+The `-C` option changes the destination directory for the extraction.
+
+This is useful when you don't want to extract everything into the current directory.
+
+---
+
+# 9. BZIP2 Compression
+
+Another common compression algorithm is **BZIP2**.
+
+With TAR, BZIP2 compression is enabled using:
+
+```bash
+j
+```
+
+For example:
+
+```bash
+tar -cjvf backup.tar.bz2 project/
+```
+
+Here:
+
+```text
+c = create
+j = BZIP2 compression
+v = verbose
+f = file
+```
+
+To list its contents:
+
+```bash
+tar -tjvf backup.tar.bz2
+```
+
+To extract it:
+
+```bash
+tar -xjvf backup.tar.bz2
+```
+
+---
+
+# 10. GZIP
+
+GZIP can also be used independently of TAR.
+
+To compress a file:
+
+```bash
+gzip file
+```
+
+For example:
+
+```bash
+gzip giropops
+```
+
+The result will be:
+
+```text
+giropops.gz
+```
+
+The original uncompressed file is replaced by the compressed version.
+
+To decompress it:
+
+```bash
+gzip -d giropops.gz
+```
+
+The `-d` option means:
+
+```text
+d = decompress
+```
+
+The original file is restored.
+
+---
+
+# 11. GZIP Compression Levels
+
+GZIP supports different compression levels.
+
+The levels range from:
+
+```text
+1 - fastest compression
+9 - maximum compression
+```
+
+For example:
+
+```bash
+gzip -1 file
+```
+
+or:
+
+```bash
+gzip -9 file
+```
+
+Higher compression levels generally require more CPU time.
+
+This creates an important trade-off:
+
+```text
+Higher compression
+        ↓
+Smaller file
+        ↓
+More processing time
+```
+
+The best option depends on the use case.
+
+---
+
+# 12. BZIP2
+
+BZIP2 can also be used independently.
+
+To compress a file:
+
+```bash
+bzip2 file
+```
+
+For example:
+
+```bash
+bzip2 giropops
+```
+
+The result is:
+
+```text
+giropops.bz2
+```
+
+To decompress it:
+
+```bash
+bzip2 -d giropops.bz2
+```
+
+BZIP2 can provide good compression ratios, but it may require more processing time than GZIP.
+
+---
+
+# 13. Comparing GZIP and BZIP2
+
+The choice between compression algorithms depends on the situation.
+
+| Tool        | Extension  | General characteristic               |
+| ----------- | ---------- | ------------------------------------ |
+| GZIP        | `.gz`      | Fast and widely used                 |
+| BZIP2       | `.bz2`     | Good compression, potentially slower |
+| TAR         | `.tar`     | Archiving, not compression           |
+| TAR + GZIP  | `.tar.gz`  | Very common Linux archive            |
+| TAR + BZIP2 | `.tar.bz2` | Good compression, potentially slower |
+
+A very common Linux format is:
+
+```text
+.tar.gz
+```
+
+You will encounter it frequently when downloading source code, distributing software, creating backups, and working with Linux systems.
+
+---
+
+# 14. Creating Test Files with DD
+
+The `dd` command can be used for many advanced operations in Linux.
+
+For now, we can use it to create a file with a specific size.
+
+Example:
+
+```bash
+dd if=/dev/zero of=giropops bs=1M count=5
+```
+
+The parameters mean:
+
+| Parameter | Meaning          |
+| --------- | ---------------- |
+| `if`      | Input file       |
+| `of`      | Output file      |
+| `bs`      | Block size       |
+| `count`   | Number of blocks |
+
+In this example:
+
+```text
+Input:       /dev/zero
+Output:      giropops
+Block size:  1 MB
+Count:       5
+```
+
+Therefore, the resulting file will be approximately:
+
+```text
+5 MB
+```
+
+`/dev/zero` provides a continuous stream of zero bytes, which makes it useful for generating test data.
+
+This is particularly useful when you need a file with a known size to test compression, storage, or performance.
+
+---
+
+# 15. Testing Compression Performance with TIME
+
+Linux provides the `time` command to measure how long a command takes to execute.
+
+For example:
+
+```bash
+time gzip giropops
+```
+
+The command executes `gzip` and reports timing information.
+
+You can use the same approach with BZIP2:
+
+```bash
+time bzip2 giropops
+```
+
+This allows you to compare the performance of different compression algorithms.
+
+For example:
+
+```text
+GZIP
+    ↓
+Fast compression
+
+BZIP2
+    ↓
+Potentially better compression
+    ↓
+Potentially more processing time
+```
+
+The actual results depend heavily on the type and size of the data.
+
+---
+
+# 16. Backups and Compression
+
+Compression is not always the best choice for every backup scenario.
+
+When designing a backup strategy, you need to consider:
+
+* Storage space
+* CPU usage
+* Backup duration
+* Restore duration
+* Network transfer time
+* Data type
+
+For example, if restoring a backup quickly is more important than saving disk space, aggressive compression may not be desirable.
+
+The important principle is:
+
+```text
+Compression is a trade-off between
+storage efficiency and processing time.
+```
+
+---
+
+# 17. Commands to Practice
+
+Create a test directory:
+
+```bash
+mkdir project
+```
+
+Create some files:
+
+```bash
+touch project/file1
+touch project/file2
+touch project/file3
+```
+
+Create a TAR archive:
+
+```bash
+tar -cvf project.tar project/
+```
+
+Create a TAR.GZ archive:
+
+```bash
+tar -czvf project.tar.gz project/
+```
+
+List the contents:
+
+```bash
+tar -tvf project.tar
+```
+
+List the contents of the compressed archive:
+
+```bash
+tar -tzvf project.tar.gz
+```
+
+Extract the TAR archive:
+
+```bash
+tar -xvf project.tar
+```
+
+Extract the TAR.GZ archive:
+
+```bash
+tar -xzvf project.tar.gz
+```
+
+Create a test file:
+
+```bash
+dd if=/dev/zero of=testfile bs=1M count=10
+```
+
+Compress it with GZIP:
+
+```bash
+gzip testfile
+```
+
+Decompress it:
+
+```bash
+gzip -d testfile.gz
+```
+
+Compress it with BZIP2:
+
+```bash
+bzip2 testfile
+```
+
+Decompress it:
+
+```bash
+bzip2 -d testfile.bz2
+```
+
+Measure compression time:
+
+```bash
+time gzip testfile
+```
+
+---
+
+# Key Takeaways
+
+By the end of this lesson, you should understand:
+
+* The difference between **archiving** and **compression**
+* What `tar` does
+* How to create a `.tar` archive
+* How to create a `.tar.gz` archive
+* How to create a `.tar.bz2` archive
+* How to list archive contents
+* How to extract archives
+* What GZIP and BZIP2 are
+* How to compress and decompress files directly
+* How compression levels affect performance
+* How `dd` can create test files
+* How `time` can measure command execution time
+
+The most important TAR options to memorize are:
+
+```text
+c = create
+x = extract
+t = list
+v = verbose
+f = file
+z = GZIP
+j = BZIP2
+```
+
+A useful way to remember the most common commands is:
+
+```bash
+tar -czvf backup.tar.gz project/
+tar -tzvf backup.tar.gz
+tar -xzvf backup.tar.gz
+```
+
+These three commands cover the basic workflow:
+
+```text
+Create
+  ↓
+Inspect
+  ↓
+Extract
+```
+
+---
