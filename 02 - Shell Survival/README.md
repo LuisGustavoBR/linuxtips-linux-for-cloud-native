@@ -2150,7 +2150,1340 @@ The goal is to become faster and more comfortable in the Linux terminal while le
 
 ---
 
-# Module 2 - Lesson 5: Archiving and Compression
+# Lesson 5 - Finding Files and Directories in Linux
+
+## 1. Introduction
+
+In this lesson, we will learn how to locate files and directories in Linux.
+
+We will also start working with an important Shell concept:
+
+* Metacharacters
+* Wildcards
+* The `find` command
+* File types
+* File sizes
+* File modification times
+* Executing commands with `find`
+* Case-sensitive and case-insensitive searches
+* The `which` command
+* The `file` command
+
+These concepts are extremely useful in day-to-day Linux administration.
+
+Before starting, open your terminal and practice the commands yourself. Do not just read the examples. Type them and observe the results.
+
+---
+
+# 2. Revisiting Previous Lessons
+
+Before moving forward, let's review some concepts from the previous lessons.
+
+### Lesson 1 - Basic Linux Navigation
+
+We learned commands such as:
+
+```bash
+pwd
+ls
+cd
+```
+
+* `pwd` shows the current directory.
+* `ls` lists files and directories.
+* `cd` changes the current directory.
+
+We also learned that Linux has a hierarchical filesystem.
+
+For example:
+
+```text
+/
+├── etc
+├── home
+├── var
+├── tmp
+└── usr
+```
+
+The `/` directory is the root of the filesystem.
+
+---
+
+### Lesson 2 - Working with Files and Directories
+
+We learned how to create, copy, move, and remove files and directories.
+
+Common commands:
+
+```bash
+touch file.txt
+mkdir project
+cp file.txt backup.txt
+mv file.txt /tmp/
+rm file.txt
+rm -r project
+```
+
+We also learned that Linux treats files and directories differently and that commands can operate on multiple files at once.
+
+---
+
+### Lesson 3 - File and Directory Information
+
+We learned how to inspect files and directories using commands such as:
+
+```bash
+ls -l
+ls -la
+cat
+```
+
+The `ls -l` output also introduced us to file types.
+
+For example:
+
+```text
+drwxr-xr-x
+-rw-r--r--
+```
+
+The first character identifies the type:
+
+```text
+d = directory
+- = regular file
+c = character device
+b = block device
+```
+
+This will become important later in this lesson.
+
+---
+
+### Lesson 4 - Shell Shortcuts and Aliases
+
+We learned several useful terminal shortcuts:
+
+```text
+Ctrl + L    Clear the terminal
+Ctrl + R    Search command history
+Ctrl + W    Delete a word
+Ctrl + U    Delete from cursor to beginning
+Ctrl + A    Go to beginning of line
+Ctrl + E    Go to end of line
+Ctrl + C    Cancel a running command
+Ctrl + D    Exit/logout
+```
+
+We also learned about aliases:
+
+```bash
+alias ll='ls -la'
+```
+
+And persistent Bash configuration using:
+
+```bash
+~/.bashrc
+```
+
+After modifying `.bashrc`, we can reload it with:
+
+```bash
+source ~/.bashrc
+```
+
+These concepts will help us work more efficiently while practicing the commands in this lesson.
+
+---
+
+# 3. Metacharacters and Wildcards
+
+One of the most useful Shell features is the ability to use special characters to represent patterns.
+
+These are commonly called wildcards.
+
+Some important ones are:
+
+```text
+*       One or more characters
+?       Exactly one character
+[ ]     A set or range of characters
+{ }     Brace expansion
+```
+
+These characters allow us to work with many files without specifying every filename manually.
+
+---
+
+# 4. Brace Expansion
+
+Let's create a directory for our experiments:
+
+```bash
+mkdir projects
+cd projects
+```
+
+Suppose we want to create three files:
+
+```text
+arc-1.txt
+arc-2.txt
+arc-3.txt
+```
+
+We could create them individually:
+
+```bash
+touch arc-1.txt
+touch arc-2.txt
+touch arc-3.txt
+```
+
+But this is unnecessary.
+
+We can use brace expansion:
+
+```bash
+touch arc-{1,2,3}.txt
+```
+
+Check the result:
+
+```bash
+ls
+```
+
+You should see:
+
+```text
+arc-1.txt
+arc-2.txt
+arc-3.txt
+```
+
+Brace expansion can also generate ranges.
+
+For example:
+
+```bash
+touch arc-{10..20}.txt
+```
+
+This creates:
+
+```text
+arc-10.txt
+arc-11.txt
+arc-12.txt
+...
+arc-20.txt
+```
+
+This is very useful when creating multiple files or directories with similar names.
+
+---
+
+# 5. The Asterisk Wildcard
+
+The `*` wildcard represents zero or more characters.
+
+For example:
+
+```bash
+ls /etc/*.conf
+```
+
+This means:
+
+> List every file in `/etc` whose name ends with `.conf`.
+
+You can also use it with `cp`.
+
+For example:
+
+```bash
+mkdir conf
+cp /etc/*.conf conf/
+```
+
+Now:
+
+```bash
+ls conf
+```
+
+will show the configuration files that matched the pattern.
+
+The important idea is:
+
+```text
+*.conf
+```
+
+means:
+
+```text
+anything.conf
+```
+
+The `*` can represent multiple characters.
+
+For example:
+
+```text
+a.conf
+test.conf
+network.conf
+my-long-configuration.conf
+```
+
+All of them can match:
+
+```bash
+*.conf
+```
+
+---
+
+# 6. Using `*` with Other Commands
+
+Wildcards are not exclusive to `ls`.
+
+They can be used with many commands.
+
+For example:
+
+```bash
+rm *
+```
+
+This removes all files in the current directory.
+
+Be extremely careful with commands such as:
+
+```bash
+rm -rf *
+```
+
+This can remove a large amount of data very quickly.
+
+Always verify what a wildcard matches before performing destructive operations.
+
+A good habit is:
+
+```bash
+ls *.txt
+```
+
+before:
+
+```bash
+rm *.txt
+```
+
+---
+
+# 7. The Question Mark Wildcard
+
+The `?` wildcard represents exactly one character.
+
+Let's create some files:
+
+```bash
+mkdir giropops
+cd giropops
+touch arc-{1..20}.txt
+```
+
+Now:
+
+```bash
+ls arc-?.txt
+```
+
+The `?` represents exactly one character.
+
+Therefore, it matches:
+
+```text
+arc-1.txt
+arc-2.txt
+...
+arc-9.txt
+```
+
+But it does not match:
+
+```text
+arc-10.txt
+arc-11.txt
+```
+
+because those filenames contain two characters after `arc-`.
+
+To match files from `10` to `20`, we can use:
+
+```bash
+ls arc-??.txt
+```
+
+Now `??` represents exactly two characters.
+
+Therefore:
+
+```text
+arc-10.txt
+arc-11.txt
+...
+arc-20.txt
+```
+
+will match.
+
+---
+
+# 8. Character Sets with `[ ]`
+
+Square brackets allow us to specify a set or range of characters.
+
+For example:
+
+```bash
+ls arc-[1-5].txt
+```
+
+This matches:
+
+```text
+arc-1.txt
+arc-2.txt
+arc-3.txt
+arc-4.txt
+arc-5.txt
+```
+
+We can also explicitly list characters:
+
+```bash
+ls arc-[123].txt
+```
+
+This matches:
+
+```text
+arc-1.txt
+arc-2.txt
+arc-3.txt
+```
+
+The important difference is:
+
+```text
+?       Exactly one arbitrary character
+[123]   Exactly one character from the specified set
+[1-5]   Exactly one character from the specified range
+```
+
+---
+
+# 9. Filename Substitution with Braces
+
+Shell expansion can also be useful when creating alternative filenames.
+
+For example:
+
+```bash
+touch file.txt
+```
+
+We can create a backup using:
+
+```bash
+cp file.txt{,.bak}
+```
+
+This expands to:
+
+```bash
+cp file.txt file.txt.bak
+```
+
+The comma-separated empty value means that the original filename is reused.
+
+This is a useful Shell trick for quickly creating backups.
+
+---
+
+# 10. The `find` Command
+
+Now we get to one of the most important commands in this lesson:
+
+```bash
+find
+```
+
+The `find` command searches for files and directories.
+
+Its basic structure is:
+
+```bash
+find <directory> <criteria>
+```
+
+For example:
+
+```bash
+find /etc -name "motd"
+```
+
+This tells Linux:
+
+> Search inside `/etc` for something named `motd`.
+
+The result might be:
+
+```text
+/etc/motd
+```
+
+---
+
+# 11. Searching the Entire Filesystem
+
+The `/` directory represents the entire filesystem.
+
+Therefore:
+
+```bash
+find / -name "arc-10.txt"
+```
+
+means:
+
+> Search the entire filesystem for a file named `arc-10.txt`.
+
+Depending on the system, this may take some time.
+
+If a command is taking too long or producing too much output, remember the shortcut from Lesson 4:
+
+```text
+Ctrl + C
+```
+
+This cancels the running command.
+
+---
+
+# 12. Using Wildcards with `find`
+
+We can also use wildcards with `find`.
+
+For example:
+
+```bash
+find / -name "arc-*.txt"
+```
+
+This searches for filenames that:
+
+* Start with `arc-`
+* Have any number of characters after that
+* End with `.txt`
+
+Another example:
+
+```bash
+find / -name "arc-?.txt"
+```
+
+Here `?` represents exactly one character.
+
+When using wildcards with `find`, it is generally best to quote the pattern:
+
+```bash
+find / -name "arc-*.txt"
+```
+
+instead of:
+
+```bash
+find / -name arc-*.txt
+```
+
+The quotes prevent the current Shell from expanding the wildcard before `find` receives it.
+
+This is an important distinction.
+
+---
+
+# 13. Searching by File Type
+
+`find` can search for specific types of filesystem objects.
+
+The main option is:
+
+```bash
+-type
+```
+
+For example:
+
+```bash
+find / -name "giropops"
+```
+
+could return both:
+
+```text
+/giropops
+/estrigos/giropops
+```
+
+One could be a directory and the other could be a regular file.
+
+To search only for directories:
+
+```bash
+find / -type d -name "giropops"
+```
+
+To search only for regular files:
+
+```bash
+find / -type f -name "giropops"
+```
+
+Common file types include:
+
+```text
+f = regular file
+d = directory
+c = character device
+b = block device
+```
+
+---
+
+# 14. Understanding File Types
+
+We can verify file types with:
+
+```bash
+ls -l
+```
+
+For example:
+
+```text
+drwxr-xr-x  giropops
+-rw-r--r--  giropops.txt
+```
+
+The first character tells us the type.
+
+```text
+d
+```
+
+means directory.
+
+```text
+-
+```
+
+means regular file.
+
+This connects directly with what we learned in previous lessons.
+
+---
+
+# 15. Searching by File Size
+
+`find` can also search based on file size.
+
+For example:
+
+```bash
+find / -type f -size 10k
+```
+
+This searches for files with a size matching the specified value.
+
+You can also use:
+
+```bash
+find / -type f -size +10k
+```
+
+The `+` means:
+
+> Greater than 10 KB.
+
+And:
+
+```bash
+find / -type f -size -10k
+```
+
+means:
+
+> Smaller than 10 KB.
+
+This is extremely useful when troubleshooting disk usage.
+
+---
+
+# 16. Searching by Modification Time
+
+Another useful `find` option is:
+
+```bash
+-mtime
+```
+
+It searches based on the number of days since a file was modified.
+
+For example:
+
+```bash
+find / -type f -mtime +20
+```
+
+means:
+
+> Find regular files modified more than 20 days ago.
+
+You can also search for files modified recently:
+
+```bash
+find / -type f -mtime -1
+```
+
+This means:
+
+> Find regular files modified within the last day.
+
+There are related options as well:
+
+```text
+-mtime    Modification time in days
+-mmin     Modification time in minutes
+-ctime    Change time
+-atime    Access time
+```
+
+These options become very useful when investigating logs, backups, temporary files, and old data.
+
+---
+
+# 17. Deleting Files with `find`
+
+`find` can also execute actions on the files it finds.
+
+For example:
+
+```bash
+find / -type f -name "giropops" -delete
+```
+
+This searches for matching files and deletes them.
+
+Be extremely careful with `-delete`.
+
+The command does not ask for confirmation.
+
+If the search pattern is wrong, you can delete the wrong files.
+
+For this reason, it is usually safer to test the search first:
+
+```bash
+find / -type f -name "giropops"
+```
+
+Only after confirming the results should you consider a destructive action.
+
+---
+
+# 18. Executing Commands with `find`
+
+A safer and more flexible option is `-exec`.
+
+For example:
+
+```bash
+find / -type f -name "giropops" -exec ls -la {} \;
+```
+
+This means:
+
+1. Search for the specified files.
+2. Find a matching file.
+3. Execute `ls -la` on that file.
+
+The special placeholder:
+
+```text
+{}
+```
+
+represents the file found by `find`.
+
+The command ends with:
+
+```text
+\;
+```
+
+The syntax is important.
+
+For example:
+
+```bash
+-exec ls -la {} \;
+```
+
+The backslash prevents the Shell from interpreting the semicolon before `find` can use it.
+
+---
+
+# 19. Using `echo` with `find`
+
+We can also use `echo` to produce custom output.
+
+For example:
+
+```bash
+find / -name "giropops" -exec echo "Found: {}" \;
+```
+
+The result can look like:
+
+```text
+Found: /estrigos/giropops
+```
+
+This is useful when building scripts or creating more readable output.
+
+---
+
+# 20. `find` vs `-delete`
+
+The difference is important.
+
+Using:
+
+```bash
+find / -name "giropops" -delete
+```
+
+directly deletes the matching files.
+
+Using:
+
+```bash
+find / -name "giropops" -exec ls -la {} \;
+```
+
+allows us to inspect what was found.
+
+A good operational habit is:
+
+```text
+Search first
+Inspect the results
+Then perform the action
+```
+
+Do not start with destructive commands.
+
+---
+
+# 21. Case Sensitivity
+
+Linux is case-sensitive.
+
+These are different names:
+
+```text
+giropops
+Giropops
+GIROPOPS
+```
+
+For example:
+
+```bash
+find / -name "giropops"
+```
+
+will not normally match:
+
+```text
+Giropops
+```
+
+because the capitalization is different.
+
+---
+
+# 22. Case-Insensitive Search
+
+For a case-insensitive search, we can use:
+
+```bash
+-iname
+```
+
+For example:
+
+```bash
+find / -iname "giropops"
+```
+
+This can match:
+
+```text
+giropops
+Giropops
+GIROPOPS
+```
+
+The important difference is:
+
+```text
+-name     Case-sensitive
+-iname    Case-insensitive
+```
+
+---
+
+# 23. The `file` Command
+
+Another useful command is:
+
+```bash
+file
+```
+
+It identifies the type of a file.
+
+For example:
+
+```bash
+file somefile
+```
+
+It can tell you whether something is:
+
+* A text file
+* A binary executable
+* A directory
+* An image
+* An archive
+* Another recognized file format
+
+This is useful when the filename or extension does not tell you what the file actually contains.
+
+---
+
+# 24. Listing a Directory vs the Directory Itself
+
+There is an important difference between:
+
+```bash
+ls giropops
+```
+
+and:
+
+```bash
+ls -ld giropops
+```
+
+The first command lists the contents of the directory.
+
+The second displays information about the directory itself.
+
+For example:
+
+```bash
+ls giropops
+```
+
+might show:
+
+```text
+file1.txt
+file2.txt
+file3.txt
+```
+
+While:
+
+```bash
+ls -ld giropops
+```
+
+might show:
+
+```text
+drwxr-xr-x  giropops
+```
+
+The `-d` option tells `ls` to operate on the directory itself instead of listing its contents.
+
+---
+
+# 25. The `which` Command
+
+Another useful command for locating programs is:
+
+```bash
+which
+```
+
+For example:
+
+```bash
+which vi
+```
+
+This can return something like:
+
+```text
+/usr/bin/vi
+```
+
+This tells you where the executable being used by your Shell is located.
+
+For example:
+
+```bash
+which ls
+```
+
+might return:
+
+```text
+/usr/bin/ls
+```
+
+This is useful when troubleshooting PATH issues or determining which executable is actually being used.
+
+---
+
+# 26. Practical Exercise
+
+Create a practice environment:
+
+```bash
+mkdir -p ~/giropops
+cd ~/giropops
+```
+
+Create several files:
+
+```bash
+touch arc-{1..20}.txt
+touch giropops
+touch Giropops
+touch GIROPOPS
+```
+
+Now practice the following.
+
+### List all files
+
+```bash
+ls
+```
+
+### List files from 1 to 9
+
+```bash
+ls arc-?.txt
+```
+
+### List files from 10 to 20
+
+```bash
+ls arc-??.txt
+```
+
+### List files from 1 to 5
+
+```bash
+ls arc-[1-5].txt
+```
+
+### Find a specific file
+
+```bash
+find . -name "arc-10.txt"
+```
+
+### Find all `.txt` files
+
+```bash
+find . -name "*.txt"
+```
+
+### Find only regular files
+
+```bash
+find . -type f
+```
+
+### Find only directories
+
+```bash
+find . -type d
+```
+
+### Case-sensitive search
+
+```bash
+find . -name "giropops"
+```
+
+### Case-insensitive search
+
+```bash
+find . -iname "giropops"
+```
+
+### Find files larger than 1 KB
+
+```bash
+find . -type f -size +1k
+```
+
+### Find recently modified files
+
+```bash
+find . -type f -mtime -1
+```
+
+### Execute `ls -la` on matching files
+
+```bash
+find . -type f -name "*.txt" -exec ls -la {} \;
+```
+
+---
+
+# 27. Important Commands from This Lesson
+
+| Command  | Purpose                                   |
+| -------- | ----------------------------------------- |
+| `ls`     | List files and directories                |
+| `mkdir`  | Create directories                        |
+| `touch`  | Create files                              |
+| `cp`     | Copy files                                |
+| `rm`     | Remove files                              |
+| `find`   | Search for files and directories          |
+| `file`   | Identify file type                        |
+| `which`  | Locate an executable                      |
+| `ls -ld` | Show information about a directory itself |
+
+---
+
+# 28. Important Wildcards and Metacharacters
+
+| Pattern   | Meaning                              |
+| --------- | ------------------------------------ |
+| `*`       | Zero or more characters              |
+| `?`       | Exactly one character                |
+| `[abc]`   | One character from the specified set |
+| `[1-5]`   | One character from a range           |
+| `{1,2,3}` | Brace expansion                      |
+| `{1..10}` | Range expansion                      |
+
+Examples:
+
+```bash
+*.txt
+arc-?.txt
+arc-[1-5].txt
+file-{1,2,3}.txt
+file-{1..10}.txt
+```
+
+---
+
+# 29. `find` Options to Remember
+
+These are the options you should become comfortable with:
+
+```text
+-name       Search by name
+-iname      Search by name ignoring case
+-type       Search by file type
+-size       Search by file size
+-mtime      Search by modification time in days
+-mmin       Search by modification time in minutes
+-exec       Execute a command on the result
+-delete     Delete matching results
+```
+
+Common file types:
+
+```text
+f = regular file
+d = directory
+c = character device
+b = block device
+```
+
+---
+
+# 30. Lesson Review
+
+At this point, you should understand how Linux can work with groups of files using Shell expansion and how `find` can locate files based on different criteria.
+
+The most important concepts are:
+
+### Wildcards
+
+```bash
+*
+?
+[ ]
+```
+
+They allow us to work with groups of files using patterns.
+
+### Brace expansion
+
+```bash
+touch file-{1..10}.txt
+```
+
+It allows us to generate multiple filenames quickly.
+
+### `find`
+
+```bash
+find / -name "file.txt"
+```
+
+It searches the filesystem.
+
+### File types
+
+```bash
+find / -type f
+find / -type d
+```
+
+It allows us to distinguish regular files from directories.
+
+### File size
+
+```bash
+find / -type f -size +10k
+```
+
+It allows us to search based on size.
+
+### Modification time
+
+```bash
+find / -type f -mtime -1
+```
+
+It allows us to find recently modified files.
+
+### Command execution
+
+```bash
+find / -name "*.log" -exec ls -la {} \;
+```
+
+It allows us to execute commands against search results.
+
+### Case sensitivity
+
+```bash
+find / -name "giropops"
+find / -iname "giropops"
+```
+
+Linux distinguishes uppercase and lowercase characters.
+
+### Binary location
+
+```bash
+which ls
+which vi
+```
+
+It helps identify where an executable is located.
+
+---
+
+# 31. Final Practice Challenge
+
+Do not just read this section. Open the terminal and complete it.
+
+1. Create a directory called `practice`.
+2. Enter the directory.
+3. Create 20 files named `file-1.txt` through `file-20.txt`.
+4. List only files from `file-1.txt` through `file-9.txt`.
+5. List only files from `file-10.txt` through `file-20.txt`.
+6. Create three files with different capitalization of the same name.
+7. Use `find -name` to search for them.
+8. Use `find -iname` to search for them again.
+9. Search for only regular files.
+10. Search for files larger than 1 KB.
+11. Search for files modified within the last 24 hours.
+12. Use `-exec` to run `ls -la` against the files you find.
+13. Use `which` to locate `ls`.
+14. Use `file` to identify one of your files.
+
+The goal is not to memorize every option immediately.
+
+The goal is to understand how the Shell interprets patterns and how `find` can combine a search location, criteria, and an action.
+
+Practice these commands until they become natural.
+
+---
+
+# 32. Key Takeaways
+
+Remember these concepts:
+
+```text
+*       Multiple characters
+?       One character
+[ ]     Character set or range
+{ }     Brace expansion
+
+find    Search for files and directories
+-name   Search by name
+-iname  Search ignoring case
+-type   Search by object type
+-size   Search by size
+-mtime  Search by modification time
+-exec   Execute a command on results
+-delete Delete results - use with caution
+
+which   Locate executables
+file    Identify file types
+```
+
+The most important lesson is this:
+
+> Learn to search first, inspect the results, and only then perform potentially destructive actions.
+
+This mindset will become increasingly important as you work with Linux servers, automation, DevOps, and production environments.
+
+---
+
+# Module 2 - Lesson 6: Archiving and Compression
 
 ## 1. Archiving vs. Compression
 
