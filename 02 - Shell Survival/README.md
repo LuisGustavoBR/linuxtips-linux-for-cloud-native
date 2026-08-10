@@ -2150,7 +2150,7 @@ The goal is to become faster and more comfortable in the Linux terminal while le
 
 ---
 
-# Lesson 5 - Finding Files and Directories in Linux
+# Module 2 - Lesson 5 - Finding Files and Directories in Linux
 
 ## 1. Introduction
 
@@ -4117,5 +4117,1238 @@ Inspect
   ↓
 Extract
 ```
+
+---
+
+# Module 2 - Lesson 7 - Symbolic Links, Hard Links, Inodes, and Shell Productivity
+
+## 1. Lesson Overview
+
+In this lesson, we will continue building our Linux shell skills and learn an important filesystem concept:
+
+* Symbolic links
+* Hard links
+* Inodes
+* How Linux identifies files internally
+* How to inspect inode numbers
+* How to create symbolic and hard links
+* Important limitations of hard links
+* The `man` command
+* More shell productivity techniques
+* Persistent aliases
+* Tab completion and command history
+
+These concepts are very common in Linux administration, DevOps, Cloud, and troubleshooting.
+
+---
+
+# 2. Quick Review from Lessons 1-3
+
+Before continuing, let's review some commands and concepts we have already learned.
+
+### `ls`
+
+Lists files and directories.
+
+```bash
+ls
+```
+
+Detailed listing:
+
+```bash
+ls -l
+```
+
+Show hidden files:
+
+```bash
+ls -la
+```
+
+Show inode numbers:
+
+```bash
+ls -li
+```
+
+The `-i` option displays the inode number of each file.
+
+---
+
+### `mkdir`
+
+Creates directories.
+
+```bash
+mkdir project
+```
+
+Create parent directories when necessary:
+
+```bash
+mkdir -p etc/conf
+```
+
+---
+
+### `touch`
+
+Creates an empty file.
+
+```bash
+touch file.txt
+```
+
+---
+
+### `mv`
+
+Moves or renames files and directories.
+
+```bash
+mv file.txt /tmp/
+```
+
+---
+
+### `rm`
+
+Removes files.
+
+```bash
+rm file.txt
+```
+
+Be careful with commands such as:
+
+```bash
+rm -rf
+```
+
+They can recursively remove files and directories without asking for confirmation.
+
+---
+
+### `man`
+
+Displays the manual page for a command.
+
+```bash
+man ls
+```
+
+You can navigate using:
+
+* Arrow keys
+* Page Up
+* Page Down
+* Space
+
+Press `q` to exit the manual.
+
+---
+
+# 3. What Is a Link?
+
+A link is a reference to a file or directory.
+
+Linux has two important types of links:
+
+1. Symbolic links
+2. Hard links
+
+They look similar from a user's perspective, but they work very differently internally.
+
+---
+
+# 4. Symbolic Links
+
+A symbolic link, also called a symlink, is similar to a shortcut in Windows.
+
+Imagine that we have:
+
+```text
+original.txt
+```
+
+We can create:
+
+```text
+link.txt
+```
+
+where `link.txt` points to `original.txt`.
+
+The link does not contain the original file's data. It contains a reference to the original file.
+
+The command to create a symbolic link is:
+
+```bash
+ln -s original.txt link.txt
+```
+
+The `-s` means symbolic.
+
+---
+
+## 4.1 Symbolic Link Behavior
+
+Suppose we have:
+
+```text
+original.txt
+     ↑
+     |
+link.txt
+```
+
+If we delete the symbolic link:
+
+```bash
+rm link.txt
+```
+
+The original file remains untouched.
+
+```text
+original.txt
+```
+
+However, if we delete the original:
+
+```bash
+rm original.txt
+```
+
+The symbolic link remains, but it becomes a broken link.
+
+This is called a dangling or broken symbolic link.
+
+---
+
+## 4.2 Modifying Through a Symbolic Link
+
+If the symbolic link points to a normal file, accessing the link accesses the original file.
+
+For example:
+
+```bash
+echo "Hello Linux" > link.txt
+```
+
+The contents of `original.txt` will also change because both operations ultimately access the original file.
+
+This is why symbolic links are extremely useful for configuration files, application versions, directories, and system administration.
+
+---
+
+# 5. Understanding Inodes
+
+To understand hard links, we first need to understand inodes.
+
+An inode is an internal filesystem structure that stores information about a file.
+
+You can think of an inode as an internal identification number associated with a file.
+
+The inode contains metadata such as:
+
+* File type
+* Permissions
+* Owner
+* Group
+* File size
+* Timestamps
+* References to the file's data blocks
+
+The filename itself is not the file's inode.
+
+Instead, the filesystem maintains a relationship between:
+
+```text
+filename -> inode -> file data
+```
+
+For example:
+
+```text
+giropops -> inode 5320194 -> file data
+```
+
+---
+
+# 6. Why Inodes Matter
+
+Inodes are finite.
+
+A filesystem can run out of inodes even when there is still free disk space.
+
+For example, imagine a filesystem with:
+
+```text
+Disk space:
+200 GB free
+
+Inodes:
+0 available
+```
+
+You may still have 200 GB of free storage, but you cannot create new files because there are no free inodes.
+
+This can happen when a system creates a huge number of very small files.
+
+For example:
+
+```text
+file001
+file002
+file003
+file004
+...
+file10000000
+```
+
+Even if every file is only 0 bytes or a few bytes, each file still requires filesystem metadata and an inode.
+
+This is a common troubleshooting scenario on Linux servers.
+
+---
+
+# 7. Checking Inodes
+
+We can use:
+
+```bash
+ls -li
+```
+
+The `-i` option displays the inode number.
+
+Example:
+
+```text
+5320194 -rw-r--r-- 1 user user 104857600 giropops
+```
+
+Here:
+
+```text
+5320194
+```
+
+is the inode number.
+
+You can also use `df -i` to inspect inode usage across filesystems:
+
+```bash
+df -i
+```
+
+This is an important command when troubleshooting a filesystem that appears to have free disk space but refuses to create new files.
+
+---
+
+# 8. Creating a Test File
+
+Let's create a file:
+
+```bash
+touch Corinthians
+```
+
+Now:
+
+```bash
+ls -li
+```
+
+You will see that the file has:
+
+```text
+0 bytes
+```
+
+but it still has an inode.
+
+A zero-byte file still consumes filesystem metadata.
+
+---
+
+# 9. Creating Large Test Files with `dd`
+
+We can use `dd` to create files with a specific size.
+
+For example:
+
+```bash
+dd if=/dev/zero of=giropops bs=10M count=10
+```
+
+This creates a file of approximately:
+
+```text
+10M x 10 = 100M
+```
+
+Let's break it down:
+
+### `if`
+
+Input file:
+
+```bash
+if=/dev/zero
+```
+
+`/dev/zero` provides a continuous stream of zero bytes.
+
+### `of`
+
+Output file:
+
+```bash
+of=giropops
+```
+
+### `bs`
+
+Block size:
+
+```bash
+bs=10M
+```
+
+Each block is 10 MB.
+
+### `count`
+
+Number of blocks:
+
+```bash
+count=10
+```
+
+Therefore:
+
+```text
+10 MB x 10 = 100 MB
+```
+
+`dd` is a powerful command and can be used for much more than creating test files. It can also perform low-level data copying between devices and filesystems.
+
+Be careful with `dd`, especially when writing directly to disks.
+
+---
+
+# 10. Creating a Test Directory Structure
+
+Let's create a simple structure:
+
+```bash
+mkdir -p etc/conf
+```
+
+Now we can move our test file:
+
+```bash
+mv giropops etc/conf/
+```
+
+Check it:
+
+```bash
+ls -li etc/conf/
+```
+
+You should see the inode number associated with `giropops`.
+
+---
+
+# 11. Hard Links
+
+Now we can introduce the hard link.
+
+A hard link is different from a symbolic link.
+
+A hard link does not point to another filename.
+
+Instead, it creates another directory entry pointing to the same inode.
+
+Imagine:
+
+```text
+original filename
+       |
+       v
+   inode 202
+       ^
+       |
+ hard link
+```
+
+Both names reference the same inode.
+
+Therefore, they are effectively two names for the same underlying file.
+
+---
+
+# 12. Creating a Hard Link
+
+The basic syntax is:
+
+```bash
+ln original hardlink
+```
+
+For example:
+
+```bash
+ln etc/conf/giropops giropops-hard-link
+```
+
+Now:
+
+```bash
+ls -li
+```
+
+You should see something similar to:
+
+```text
+5320194 ... giropops-hard-link
+5320194 ... giropops
+```
+
+Notice that the inode number is exactly the same.
+
+This is the key difference.
+
+---
+
+# 13. Symbolic Link vs Hard Link
+
+Let's compare them.
+
+### Symbolic link
+
+```bash
+ln -s original symlink
+```
+
+Creates a new file with a different inode.
+
+The symbolic link stores a path to the original.
+
+Conceptually:
+
+```text
+symlink
+   |
+   v
+original
+   |
+   v
+inode
+```
+
+### Hard link
+
+```bash
+ln original hardlink
+```
+
+Creates another directory entry for the same inode.
+
+Conceptually:
+
+```text
+original ----\
+              > inode
+hardlink ----/
+```
+
+---
+
+# 14. The Main Difference
+
+| Feature                        | Symbolic Link | Hard Link |
+| ------------------------------ | ------------- | --------- |
+| Creates another inode          | Yes           | No        |
+| Points to another path         | Yes           | No        |
+| Points directly to same inode  | No            | Yes       |
+| Can cross filesystems          | Yes           | No        |
+| Can become broken              | Yes           | No        |
+| Removing link removes original | No            | No        |
+| Removing original breaks link  | Yes           | No        |
+| Shows `l` in `ls -l`           | Yes           | No        |
+| Created with                   | `ln -s`       | `ln`      |
+
+---
+
+# 15. Why Hard Links Cannot Cross Filesystems
+
+Each filesystem has its own inode table.
+
+Suppose we have:
+
+```text
+Filesystem A
+    inode 202
+
+Filesystem B
+    inode 202
+```
+
+These inode numbers are unrelated.
+
+A hard link must reference an inode belonging to the same filesystem.
+
+Therefore:
+
+```text
+Filesystem A -> Filesystem B
+```
+
+cannot be used to create a hard link.
+
+Symbolic links do not have this limitation because they store a path.
+
+Therefore, a symbolic link can point to a file located on another filesystem.
+
+---
+
+# 16. What Happens When We Delete a Hard Link?
+
+Suppose:
+
+```text
+giropops --------\
+                  > inode 5320194
+hard-link -------/
+```
+
+If we remove:
+
+```bash
+rm giropops
+```
+
+the inode still exists because `hard-link` references it.
+
+The file data remains accessible through:
+
+```bash
+cat hard-link
+```
+
+Only when the last hard link is removed does the filesystem release the file's data.
+
+This is why a hard link is more than just a shortcut.
+
+It is another name for the same underlying file.
+
+---
+
+# 17. Understanding Link Counts
+
+Run:
+
+```bash
+ls -li
+```
+
+You may notice a number after the permissions:
+
+```text
+-rw-r--r-- 2 user user ...
+```
+
+That `2` is the number of hard links associated with the inode.
+
+For example:
+
+```text
+giropops
+hard-link
+```
+
+Both point to the same inode, so the link count becomes `2`.
+
+If you remove one:
+
+```bash
+rm hard-link
+```
+
+the link count becomes `1`.
+
+The underlying file still exists.
+
+---
+
+# 18. Using `man`
+
+Linux commands usually have detailed manual pages.
+
+For example:
+
+```bash
+man ls
+```
+
+You can search through the manual using:
+
+```text
+/
+```
+
+Then type a search term.
+
+For example:
+
+```text
+/inode
+```
+
+Press `Enter` to search.
+
+Use:
+
+* `Space` to move down
+* Arrow keys to navigate
+* `q` to quit
+
+You should become comfortable with `man`.
+
+You do not need to memorize every Linux command or every option.
+
+You need to know how to find the information when you need it.
+
+---
+
+# 19. Symbolic Links in `ls`
+
+When you run:
+
+```bash
+ls -l
+```
+
+a symbolic link is easy to identify.
+
+You will see something similar to:
+
+```text
+lrwxrwxrwx 1 user user 20 symlink -> /path/to/original
+```
+
+The first character is:
+
+```text
+l
+```
+
+which means symbolic link.
+
+The arrow:
+
+```text
+->
+```
+
+shows where the symbolic link points.
+
+A normal file does not show this arrow.
+
+---
+
+# 20. Hard Links in `ls`
+
+A hard link looks like a normal file:
+
+```text
+-rw-r--r-- 2 user user ...
+```
+
+There is no arrow.
+
+The important clue is the inode number.
+
+Run:
+
+```bash
+ls -li
+```
+
+If two filenames have the same inode number, they are hard links to the same underlying file.
+
+---
+
+# 21. Shell Productivity: Tab Completion
+
+Another important shell skill is tab completion.
+
+Instead of typing:
+
+```bash
+cd /var/log/my-very-long-directory-name
+```
+
+you can type part of the name and press:
+
+```text
+Tab
+```
+
+The shell will try to complete it.
+
+Tab completion works with:
+
+* Commands
+* Files
+* Directories
+* Paths
+* Many command arguments
+
+Using `Tab` makes you faster and also reduces typing mistakes.
+
+Get used to using it constantly.
+
+---
+
+# 22. Command History
+
+We previously learned:
+
+```bash
+history
+```
+
+It displays commands that you have executed.
+
+You can also use:
+
+```text
+Ctrl + R
+```
+
+to search through command history interactively.
+
+For example, press:
+
+```text
+Ctrl + R
+```
+
+and type:
+
+```text
+tar
+```
+
+The shell will search for previous commands containing `tar`.
+
+This is one of the most useful shell shortcuts you can learn.
+
+---
+
+# 23. Aliases
+
+An alias creates a shortcut for a command.
+
+For example:
+
+```bash
+alias listar='ls -lai'
+```
+
+Now:
+
+```bash
+listar
+```
+
+executes:
+
+```bash
+ls -lai
+```
+
+You can see the aliases currently configured with:
+
+```bash
+alias
+```
+
+Aliases are useful when a command is long or when you frequently use a particular combination of options.
+
+---
+
+# 24. Making an Alias Persistent
+
+There is an important limitation.
+
+If you run:
+
+```bash
+alias listar='ls -lai'
+```
+
+the alias normally exists only for the current shell session.
+
+If you close the terminal, the alias is gone.
+
+To make it persistent in Bash, add it to:
+
+```bash
+~/.bashrc
+```
+
+For example:
+
+```bash
+echo "alias listar='ls -lai'" >> ~/.bashrc
+```
+
+Notice the two `>` characters:
+
+```bash
+>>
+```
+
+This means append.
+
+It adds the new content to the end of the file.
+
+Be careful with:
+
+```bash
+>
+```
+
+A single `>` redirects output and overwrites the destination file.
+
+Therefore:
+
+```bash
+>>
+```
+
+is generally what you want when adding a new configuration line.
+
+---
+
+# 25. Reloading `.bashrc`
+
+After modifying `.bashrc`, you can reload it without closing the terminal:
+
+```bash
+source ~/.bashrc
+```
+
+This tells Bash to read and execute the contents of the file again.
+
+You can also use:
+
+```bash
+. ~/.bashrc
+```
+
+The dot is another way of invoking `source`.
+
+After that, the alias should be available:
+
+```bash
+listar
+```
+
+---
+
+# 26. ZSH and Other Shells
+
+Not every Linux environment uses Bash.
+
+For example, ZSH uses:
+
+```bash
+~/.zshrc
+```
+
+So always check which shell you are using.
+
+You can run:
+
+```bash
+echo $SHELL
+```
+
+For example:
+
+```text
+/bin/bash
+```
+
+or:
+
+```text
+/bin/zsh
+```
+
+The configuration file depends on the shell.
+
+---
+
+# 27. Practical Summary
+
+At this point, you should understand the following:
+
+### Symbolic link
+
+```bash
+ln -s original symlink
+```
+
+A symbolic link is similar to a shortcut.
+
+It has its own inode and points to another path.
+
+---
+
+### Hard link
+
+```bash
+ln original hardlink
+```
+
+A hard link is another directory entry pointing to the same inode.
+
+---
+
+### Show inode numbers
+
+```bash
+ls -li
+```
+
+---
+
+### Check inode usage
+
+```bash
+df -i
+```
+
+---
+
+### Manual pages
+
+```bash
+man command
+```
+
+Exit with:
+
+```text
+q
+```
+
+---
+
+### Create test files
+
+```bash
+touch file
+```
+
+---
+
+### Create large test files
+
+```bash
+dd if=/dev/zero of=file bs=10M count=10
+```
+
+---
+
+### Create persistent aliases
+
+```bash
+echo "alias listar='ls -lai'" >> ~/.bashrc
+```
+
+Reload:
+
+```bash
+source ~/.bashrc
+```
+
+---
+
+### Search command history
+
+```text
+Ctrl + R
+```
+
+or:
+
+```bash
+history
+```
+
+---
+
+### Use tab completion
+
+```text
+Tab
+```
+
+Use it constantly.
+
+---
+
+# 28. Practice Challenge
+
+Now it is time to practice.
+
+Create a test environment:
+
+```bash
+mkdir -p ~/linux-links/etc/conf
+cd ~/linux-links
+```
+
+Create a test file:
+
+```bash
+dd if=/dev/zero of=etc/conf/giropops bs=1M count=10
+```
+
+Check the inode:
+
+```bash
+ls -li etc/conf/giropops
+```
+
+Create a symbolic link:
+
+```bash
+ln -s etc/conf/giropops giropops-symlink
+```
+
+Create a hard link:
+
+```bash
+ln etc/conf/giropops giropops-hardlink
+```
+
+Now compare them:
+
+```bash
+ls -li
+```
+
+Answer these questions:
+
+1. Which files have the same inode?
+2. Which file has a different inode?
+3. Which one displays an arrow with `->`?
+4. What happens if you delete the symbolic link?
+5. What happens if you delete the original file?
+6. What happens if you delete the hard link?
+7. What happens to the inode link count?
+8. Why can't a hard link cross filesystems?
+
+Then create an alias:
+
+```bash
+alias listar='ls -lai'
+```
+
+Test it:
+
+```bash
+listar
+```
+
+Make it persistent:
+
+```bash
+echo "alias listar='ls -lai'" >> ~/.bashrc
+```
+
+Reload the configuration:
+
+```bash
+source ~/.bashrc
+```
+
+Finally, open the manual:
+
+```bash
+man ln
+```
+
+and investigate the available options.
+
+---
+
+# 29. Key Takeaways
+
+The most important concepts from this lesson are:
+
+```text
+Symbolic link = another file that points to a path
+Hard link     = another name for the same inode
+```
+
+Remember:
+
+```text
+Symbolic link
+      |
+      v
+   original
+      |
+      v
+    inode
+```
+
+versus:
+
+```text
+original -----\
+               > inode
+hard link ----/
+```
+
+Also remember:
+
+* `ls -li` shows inode numbers.
+* `df -i` shows inode usage.
+* `ln -s` creates symbolic links.
+* `ln` creates hard links.
+* Hard links cannot cross filesystems.
+* Symbolic links can become broken.
+* Hard links continue working as long as at least one link remains.
+* `man` is your built-in Linux documentation.
+* `Tab` improves shell productivity.
+* `Ctrl + R` searches command history.
+* `alias` creates command shortcuts.
+* `~/.bashrc` stores persistent Bash configuration.
+* `>>` appends to a file.
+* `>` overwrites a file.
+* `source ~/.bashrc` reloads the configuration.
+
+Do not just read this lesson.
+
+Open the terminal and reproduce everything.
+
+Create symbolic links, create hard links, delete them, inspect inode numbers, break a symbolic link, and observe what happens.
+
+The goal is not simply to memorize the commands.
+
+The goal is to understand how the Linux filesystem works and become comfortable using the shell.
 
 ---
