@@ -6,11 +6,88 @@ Modern infrastructure is built around Linux-based systems running in cloud envir
 
 This module introduces the foundational concepts behind Linux servers, virtualization, cloud computing, and the mindset required to operate modern infrastructure.
 
+## Table of Contents
+
+- [Module 1 - Lesson 1: Cloud-Native Mindset](#module-1---lesson-1-cloud-native-mindset)
+  - [1. Why Linux Matters](#1-why-linux-matters)
+  - [2. Linux Desktop vs Linux Server](#2-linux-desktop-vs-linux-server)
+  - [3. Understanding Virtualization](#3-understanding-virtualization)
+  - [4. Hypervisor Types](#4-hypervisor-types)
+  - [5. What Happens When a Virtual Machine Starts?](#5-what-happens-when-a-virtual-machine-starts)
+  - [6. Virtual Machines vs Containers](#6-virtual-machines-vs-containers)
+  - [7. Cloud Computing Fundamentals](#7-cloud-computing-fundamentals)
+  - [8. What Happens When You Launch a Cloud Instance?](#8-what-happens-when-you-launch-a-cloud-instance)
+  - [9. Local Virtualization vs Cloud Infrastructure](#9-local-virtualization-vs-cloud-infrastructure)
+  - [10. Pets vs Cattle](#10-pets-vs-cattle)
+  - [11. Pets](#11-pets)
+  - [12. Cattle](#12-cattle)
+  - [Key Takeaways](#key-takeaways)
+- [Module 1 - Lesson 2: Local Lab Environment: VirtualBox and Ubuntu Server](#module-1---lesson-2-local-lab-environment-virtualbox-and-ubuntu-server)
+  - [1. Installing VirtualBox](#1-installing-virtualbox)
+  - [2. Downloading Ubuntu Server](#2-downloading-ubuntu-server)
+  - [3. Why Build a Local Lab?](#3-why-build-a-local-lab)
+  - [Key Takeaways](#key-takeaways-1)
+- [Module 1 - Lesson 3: Creating the Virtual Machine and Installing Ubuntu Server](#module-1---lesson-3-creating-the-virtual-machine-and-installing-ubuntu-server)
+  - [1. Creating the Virtual Machine](#1-creating-the-virtual-machine)
+  - [2. Network Configuration](#2-network-configuration)
+  - [3. Installing Ubuntu Server](#3-installing-ubuntu-server)
+  - [4. Storage Configuration and LVM](#4-storage-configuration-and-lvm)
+  - [5. User Configuration](#5-user-configuration)
+  - [6. SSH Configuration](#6-ssh-configuration)
+  - [7. Optional Software Packages](#7-optional-software-packages)
+  - [8. Understanding the First Boot Process](#8-understanding-the-first-boot-process)
+  - [Key Takeaways](#key-takeaways-2)
+- [Module 1 - Lesson 4: SSH: The Essential Remote Access Tool](#module-1---lesson-4-ssh-the-essential-remote-access-tool)
+  - [1. What is SSH?](#1-what-is-ssh)
+  - [2. Connecting to a Virtual Machine](#2-connecting-to-a-virtual-machine)
+  - [3. Initial System Verification](#3-initial-system-verification)
+  - [4. Check the Current User](#4-check-the-current-user)
+  - [5. Check the Hostname](#5-check-the-hostname)
+  - [6. Check Kernel Information](#6-check-kernel-information)
+  - [7. Check Network Interfaces and IP Addresses](#7-check-network-interfaces-and-ip-addresses)
+  - [8. Update the System](#8-update-the-system)
+  - [9. Check Disk Usage](#9-check-disk-usage)
+  - [10. Expanding an LVM Volume](#10-expanding-an-lvm-volume)
+  - [Important Commands from This Lesson](#important-commands-from-this-lesson)
+  - [Key Takeaways](#key-takeaways-3)
+- [Module 1 - Lesson 5: AWS EC2 Lab (Free Tier)](#module-1---lesson-5-aws-ec2-lab-free-tier)
+  - [1. Creating an AWS Account](#1-creating-an-aws-account)
+  - [2. Securing the AWS Root Account](#2-securing-the-aws-root-account)
+  - [3. Understanding Security Groups](#3-understanding-security-groups)
+  - [4. Recommended Security Group Configuration](#4-recommended-security-group-configuration)
+  - [5. Understanding EC2 Key Pairs](#5-understanding-ec2-key-pairs)
+  - [6. Launching an EC2 Instance](#6-launching-an-ec2-instance)
+  - [7. Obtaining the Public IP Address](#7-obtaining-the-public-ip-address)
+  - [8. Public IP vs Elastic IP](#8-public-ip-vs-elastic-ip)
+  - [9. Connecting to EC2 via SSH](#9-connecting-to-ec2-via-ssh)
+  - [10. Common SSH Error: Unprotected Private Key File](#10-common-ssh-error-unprotected-private-key-file)
+  - [11. Successful Connection](#11-successful-connection)
+  - [Important Commands from This Lesson](#important-commands-from-this-lesson-1)
+  - [Key Takeaways](#key-takeaways-4)
+- [Module 1 - Lesson 6: SSH Productivity, Key Management, and File Transfers](#module-1---lesson-6-ssh-productivity-key-management-and-file-transfers)
+  - [1. SSH Configuration File (`~/.ssh/config`)](#1-ssh-configuration-file-sshconfig)
+  - [2. Generating SSH Key Pairs with `ssh-keygen`](#2-generating-ssh-key-pairs-with-ssh-keygen)
+  - [3. Installing a Public Key on a Remote Server](#3-installing-a-public-key-on-a-remote-server)
+  - [4. Secure File Transfers with SCP](#4-secure-file-transfers-with-scp)
+  - [5. Uploading a File](#5-uploading-a-file)
+  - [6. Downloading a File](#6-downloading-a-file)
+  - [7. Copying Directories Recursively](#7-copying-directories-recursively)
+  - [8. Efficient Synchronization with rsync](#8-efficient-synchronization-with-rsync)
+  - [9. Installation](#9-installation)
+  - [10. Synchronizing a Local Directory to a Remote Server](#10-synchronizing-a-local-directory-to-a-remote-server)
+  - [11. Synchronizing from Remote to Local](#11-synchronizing-from-remote-to-local)
+  - [12. Excluding Files and Directories](#12-excluding-files-and-directories)
+  - [13. Creating a Mirror Copy](#13-creating-a-mirror-copy)
+  - [14. Performing a Dry Run](#14-performing-a-dry-run)
+  - [15. Common rsync Use Cases](#15-common-rsync-use-cases)
+  - [Important Commands from This Lesson](#important-commands-from-this-lesson-2)
+  - [Key Takeaways](#key-takeaways-5)
+
 ---
 
-# 1.1 Cloud-Native Mindset
+# Module 1 - Lesson 1: Cloud-Native Mindset
 
-## Why Linux Matters
+## 1. Why Linux Matters
 
 Linux is the dominant operating system powering modern infrastructure.
 
@@ -28,7 +105,7 @@ Understanding Linux is not simply learning an operating system—it is learning 
 
 ---
 
-## Linux Desktop vs Linux Server
+## 2. Linux Desktop vs Linux Server
 
 A critical distinction in infrastructure operations is understanding the difference between desktop and server environments.
 
@@ -86,7 +163,7 @@ A typical production server environment consists of:
 
 ---
 
-## Understanding Virtualization
+## 3. Understanding Virtualization
 
 Virtualization allows multiple virtual machines (VMs) to run on a single physical server.
 
@@ -101,7 +178,7 @@ In reality, these resources are managed by a software layer called a **hyperviso
 
 ---
 
-## Hypervisor Types
+## 4. Hypervisor Types
 
 ### Type 1 Hypervisor (Bare-Metal)
 
@@ -162,7 +239,7 @@ Type 2 hypervisors are commonly used for:
 
 ---
 
-## What Happens When a Virtual Machine Starts?
+## 5. What Happens When a Virtual Machine Starts?
 
 When a virtual machine is created:
 
@@ -178,7 +255,7 @@ The virtualization layer abstracts the physical hardware and presents virtualize
 
 ---
 
-## Virtual Machines vs Containers
+## 6. Virtual Machines vs Containers
 
 Virtual machines virtualize hardware.
 
@@ -199,9 +276,9 @@ This distinction becomes fundamental when working with Kubernetes.
 
 ---
 
-# Cloud Computing Fundamentals
+## 7. Cloud Computing Fundamentals
 
-## What Happens When You Launch a Cloud Instance?
+## 8. What Happens When You Launch a Cloud Instance?
 
 When a virtual machine is launched in a cloud platform, the following process occurs:
 
@@ -218,7 +295,7 @@ The primary innovation of cloud computing is not virtualization itself, but the 
 
 ---
 
-## Local Virtualization vs Cloud Infrastructure
+## 9. Local Virtualization vs Cloud Infrastructure
 
 | Aspect       | Local Virtual Machine         | Cloud Virtual Machine            |
 | ------------ | ----------------------------- | -------------------------------- |
@@ -231,11 +308,11 @@ The primary innovation of cloud computing is not virtualization itself, but the 
 
 ---
 
-# Pets vs Cattle
+## 10. Pets vs Cattle
 
 One of the most important cloud-native concepts is the distinction between **Pets** and **Cattle**.
 
-## Pets
+## 11. Pets
 
 Traditional servers are treated as unique systems:
 
@@ -248,7 +325,7 @@ If a server fails, significant effort is invested in recovering it.
 
 ---
 
-## Cattle
+## 12. Cattle
 
 Cloud-native infrastructure treats servers as disposable resources:
 
@@ -282,9 +359,9 @@ The goal is to make infrastructure reproducible, scalable, and resilient rather 
 
 ---
 
-# 1.2 Local Lab Environment: VirtualBox and Ubuntu Server
+# Module 1 - Lesson 2: Local Lab Environment: VirtualBox and Ubuntu Server
 
-## Installing VirtualBox
+## 1. Installing VirtualBox
 
 VirtualBox is a Type 2 hypervisor that allows virtual machines to run on top of an existing operating system.
 
@@ -309,7 +386,7 @@ The virtualization concepts covered throughout this training remain the same reg
 
 ---
 
-## Downloading Ubuntu Server
+## 2. Downloading Ubuntu Server
 
 For this training, use the latest available **Ubuntu Server LTS (Long-Term Support)** release.
 
@@ -339,7 +416,7 @@ Unlike desktop editions, Ubuntu Server does not include a graphical user interfa
 
 ---
 
-## Why Build a Local Lab?
+## 3. Why Build a Local Lab?
 
 A local laboratory provides several advantages during the learning process:
 
@@ -380,9 +457,9 @@ The primary difference is the hosting location; the underlying operating system 
 
 ---
 
-# 1.3 Local Lab Environment: VirtualBox and Ubuntu Server
+# Module 1 - Lesson 3: Creating the Virtual Machine and Installing Ubuntu Server
 
-## Creating the Virtual Machine
+## 1. Creating the Virtual Machine
 
 Open VirtualBox and create a new virtual machine using the following recommended settings:
 
@@ -422,7 +499,7 @@ For laboratory environments, dynamic allocation is generally the preferred optio
 
 ---
 
-## Network Configuration
+## 2. Network Configuration
 
 Before starting the virtual machine, review the network adapter settings.
 
@@ -503,7 +580,7 @@ ssh -p 2222 username@127.0.0.1
 
 ---
 
-## Installing Ubuntu Server
+## 3. Installing Ubuntu Server
 
 Attach the downloaded Ubuntu Server ISO to the virtual machine and start the installation process.
 
@@ -554,7 +631,7 @@ Unless operating behind a corporate proxy, leave the proxy settings empty and us
 
 ---
 
-## Storage Configuration and LVM
+## 4. Storage Configuration and LVM
 
 For storage configuration, select:
 
@@ -613,7 +690,7 @@ LVM is widely used in enterprise Linux environments because it enables storage g
 
 ---
 
-## User Configuration
+## 5. User Configuration
 
 Create a standard administrative user account.
 
@@ -631,7 +708,7 @@ Administrative privileges can be granted through `sudo`, which provides improved
 
 ---
 
-## SSH Configuration
+## 6. SSH Configuration
 
 During installation, enable:
 
@@ -645,7 +722,7 @@ Without OpenSSH Server, remote terminal access will not be available.
 
 ---
 
-## Optional Software Packages
+## 7. Optional Software Packages
 
 Skip the optional featured Snap packages during installation.
 
@@ -658,7 +735,7 @@ A minimal server installation provides:
 
 ---
 
-## Understanding the First Boot Process
+## 8. Understanding the First Boot Process
 
 After installation and reboot, Linux follows a defined startup sequence.
 
@@ -694,13 +771,26 @@ After logging in, the Linux server is ready for administration and remote access
 
 ---
 
-# 1.4 SSH: The Essential Remote Access Tool
+## Key Takeaways
+
+* A virtual machine is created in VirtualBox with the recommended specs (2 GB RAM, 2 vCPUs, 20 GB dynamically allocated disk) before installing the OS.
+* The network adapter mode must be chosen before boot: **Bridged** is recommended for this lab because it gives the VM its own LAN IP and direct SSH access, closer to a real server; **NAT** requires port forwarding to reach the VM from outside.
+* During Ubuntu Server installation: pick the matching keyboard layout, choose the standard (non-minimized) install so training utilities are available, let DHCP assign the network address, and leave proxy/mirror settings at their defaults unless behind a corporate proxy.
+* Enabling **LVM** during storage setup adds a logical layer (Physical Volume → Volume Group → Logical Volume) on top of the physical disk, allowing the filesystem to grow later without repartitioning — Ubuntu may deliberately leave space unallocated in the Volume Group for this purpose.
+* Create a standard administrative user instead of logging in as `root`; use `sudo` for privileged actions.
+* Enable **OpenSSH Server** during installation — without it, no remote terminal access is possible.
+* Skip optional Snap packages to keep the installation minimal, reducing resource usage and attack surface.
+* On first boot, Linux follows a fixed sequence: **GRUB** loads the kernel → the **kernel** initializes hardware (CPU, memory, storage, network) → **systemd** starts as PID 1 and launches services (networking, SSH, logging, scheduled tasks) → the **login prompt** appears.
+
+---
+
+# Module 1 - Lesson 4: SSH: The Essential Remote Access Tool
 
 With both your local VM and cloud instance running, the next step is connecting to them remotely using SSH.
 
 ---
 
-## What is SSH?
+## 1. What is SSH?
 
 **SSH (Secure Shell)** is an encrypted network protocol used for secure communication between computers. It follows a **client-server architecture**:
 
@@ -711,7 +801,7 @@ All traffic is encrypted, protecting credentials and data from interception when
 
 ---
 
-## Connecting to a Virtual Machine
+## 2. Connecting to a Virtual Machine
 
 ### Using a Bridged Network
 
@@ -739,7 +829,7 @@ In a lab environment, it is generally acceptable to type:
 yes
 ```
 
-In production environments, always verify the server fingerprint through a trusted channel before accepting it. This helps prevent **Man-in-the-Middle (MITM)** attacks.
+> **Warning:** In production environments, always verify the server fingerprint through a trusted channel before accepting it. This helps prevent **Man-in-the-Middle (MITM)** attacks.
 
 After accepting the fingerprint, SSH prompts for the user's password.
 
@@ -753,11 +843,11 @@ ssh -p 2222 devops@127.0.0.1
 
 ---
 
-# Initial System Verification
+## 3. Initial System Verification
 
 After establishing the connection, verify that the system is functioning correctly and become familiar with basic administrative commands.
 
-## Check the Current User
+## 4. Check the Current User
 
 Display the account currently logged into the system:
 
@@ -771,7 +861,7 @@ Example output:
 devops
 ```
 
-## Check the Hostname
+## 5. Check the Hostname
 
 Display the machine's hostname:
 
@@ -785,7 +875,7 @@ Example output:
 linux-lab
 ```
 
-## Check Kernel Information
+## 6. Check Kernel Information
 
 Display detailed operating system and kernel information:
 
@@ -811,7 +901,7 @@ Linux linux-lab 6.8.0-45-generic #45-Ubuntu SMP x86_64 GNU/Linux
 
 The Linux kernel is responsible for managing hardware resources, memory, processes, storage, and networking.
 
-## Check Network Interfaces and IP Addresses
+## 7. Check Network Interfaces and IP Addresses
 
 Display all network interfaces:
 
@@ -853,7 +943,7 @@ This is the machine's network adapter. Interface names may vary depending on the
 
 The IP address assigned to this interface is typically the address used for SSH connections.
 
-## Update the System
+## 8. Update the System
 
 Refresh package metadata and install available updates:
 
@@ -872,7 +962,7 @@ sudo apt update && sudo apt upgrade -y
 
 Keeping systems updated is a fundamental security and maintenance practice.
 
-## Check Disk Usage
+## 9. Check Disk Usage
 
 Display filesystem usage in a human-readable format:
 
@@ -897,7 +987,7 @@ Filesystem                         Size  Used Avail Use% Mounted on
 | `Use%`       | Percentage used       |
 | `Mounted on` | Mount point           |
 
-## Expanding an LVM Volume
+## 10. Expanding an LVM Volume
 
 In some Ubuntu installations, **Logical Volume Manager (LVM)** allocates only part of the available disk space during installation.
 
@@ -920,15 +1010,41 @@ The filesystem should now reflect the full available capacity.
 
 One of the key advantages of LVM is the ability to expand storage volumes dynamically without reinstalling the operating system or recreating filesystems.
 
+## Important Commands from This Lesson
+
+| Command | Purpose |
+|---|---|
+| `ssh user@IP` | Connect to a host directly reachable on the local network (bridged VM). |
+| `ssh -p PORT user@127.0.0.1` | Connect to a NAT VM through a forwarded host port. |
+| `whoami` | Show the currently logged-in user. |
+| `hostname` | Show the machine's hostname. |
+| `uname -a` | Show kernel name, version, and CPU architecture. |
+| `ip addr` | List network interfaces and their assigned IP addresses. |
+| `sudo apt update && sudo apt upgrade -y` | Refresh package metadata and install available updates. |
+| `df -h` | Show filesystem usage in human-readable form. |
+| `sudo lvextend -l +100%FREE /dev/mapper/VG-LV` | Allocate all remaining free space to an LVM logical volume. |
+| `sudo resize2fs /dev/mapper/VG-LV` | Grow the filesystem to fill the expanded logical volume. |
+
 ---
 
-# 1.5 AWS EC2 Lab (Free Tier)
+## Key Takeaways
+
+* SSH is an encrypted client-server protocol: `sshd` listens on the target machine (port 22 by default) and the `ssh` client initiates the connection, protecting credentials and data from interception.
+* A **Bridged** VM is reached directly by its LAN IP (`ssh user@192.168.1.20`); a **NAT** VM requires connecting through the forwarded host port (`ssh -p 2222 user@127.0.0.1`).
+* The first connection to any host always shows a fingerprint verification prompt — in production, always verify the fingerprint through a trusted channel before accepting it, to guard against Man-in-the-Middle attacks.
+* After connecting, basic system verification uses `whoami` (current user), `hostname`, `uname -a` (kernel/OS info), `ip addr` (network interfaces), and `df -h` (disk usage).
+* `sudo apt update && sudo apt upgrade -y` refreshes package metadata and installs updates — a fundamental security and maintenance habit.
+* If LVM only allocated part of the disk during installation, `sudo lvextend -l +100%FREE <volume>` followed by `sudo resize2fs <volume>` expands the filesystem live, without reinstalling the OS.
+
+---
+
+# Module 1 - Lesson 5: AWS EC2 Lab (Free Tier)
 
 A local environment is essential for learning Linux and DevOps fundamentals, but real-world experience requires working with cloud infrastructure. AWS EC2 provides an ideal platform for practicing server administration, networking, and remote access in a production-like environment.
 
 ---
 
-## Creating an AWS Account
+## 1. Creating an AWS Account
 
 Create an AWS account at:
 
@@ -936,11 +1052,11 @@ https://aws.amazon.com/
 
 A valid payment method is required during registration. However, resources that remain within the AWS Free Tier limits will not incur charges.
 
-> **Important:** Always monitor your AWS usage to avoid unexpected costs.
+> **Warning:** Always monitor your AWS usage to avoid unexpected costs.
 
 ---
 
-## Securing the AWS Root Account
+## 2. Securing the AWS Root Account
 
 Before creating any resources, enable **Multi-Factor Authentication (MFA)** for the root account.
 
@@ -956,11 +1072,11 @@ Use an authentication application such as:
 * Authy
 * Microsoft Authenticator
 
-> MFA significantly reduces the risk of unauthorized access and should always be enabled on privileged accounts.
+> **Note:** MFA significantly reduces the risk of unauthorized access and should always be enabled on privileged accounts.
 
 ---
 
-# Understanding Security Groups
+## 3. Understanding Security Groups
 
 A **Security Group** is a stateful virtual firewall that controls inbound and outbound traffic for an EC2 instance.
 
@@ -987,22 +1103,20 @@ If an inbound connection is allowed, the corresponding response traffic is autom
 
 ---
 
-## Recommended Security Group Configuration
+## 4. Recommended Security Group Configuration
 
 | Direction | Type        | Protocol | Port | Source         | Purpose                                              |
 | --------- | ----------- | -------- | ---- | -------------- | ---------------------------------------------------- |
 | Inbound   | SSH         | TCP      | 22   | Your Public IP | Remote administration                                |
 | Outbound  | All Traffic | All      | All  | 0.0.0.0/0      | Internet access for updates and package installation |
 
-> **Security Best Practice**
->
-> Never expose SSH (port 22) to `0.0.0.0/0`.
+> **Warning:** Never expose SSH (port 22) to `0.0.0.0/0`.
 >
 > Restrict access to your public IP whenever possible. AWS provides a **My IP** option that automatically detects and populates your current IP address.
 
 ---
 
-# Understanding EC2 Key Pairs
+## 5. Understanding EC2 Key Pairs
 
 AWS EC2 uses **public key authentication** instead of traditional passwords.
 
@@ -1033,7 +1147,7 @@ The private key is never transmitted across the network.
 
 ---
 
-# Launching an EC2 Instance
+## 6. Launching an EC2 Instance
 
 Navigate to:
 
@@ -1066,7 +1180,7 @@ Running
 
 ---
 
-# Obtaining the Public IP Address
+## 7. Obtaining the Public IP Address
 
 From the EC2 instance details page, locate:
 
@@ -1076,7 +1190,7 @@ Public IPv4 Address
 
 This address will be used for SSH connections.
 
-## Public IP vs Elastic IP
+## 8. Public IP vs Elastic IP
 
 ### Public Dynamic IP
 
@@ -1093,7 +1207,7 @@ For lab environments, a dynamic public IP is usually sufficient.
 
 ---
 
-# Connecting to EC2 via SSH
+## 9. Connecting to EC2 via SSH
 
 Move the downloaded private key to a dedicated location:
 
@@ -1116,7 +1230,7 @@ ssh -i ~/.ssh/keys/linux-lab.pem ubuntu@54.123.45.67
 
 ---
 
-# Common SSH Error: Unprotected Private Key File
+## 10. Common SSH Error: Unprotected Private Key File
 
 A common error when connecting to EC2 is:
 
@@ -1161,7 +1275,7 @@ ssh -i ~/.ssh/keys/linux-lab.pem ubuntu@<EC2-PUBLIC-IP>
 
 ---
 
-# Successful Connection
+## 11. Successful Connection
 
 If authentication succeeds, the terminal prompt will resemble:
 
@@ -1171,9 +1285,18 @@ ubuntu@ip-172-31-xx-xx:~$
 
 At this point, you are connected directly to the EC2 instance, and all commands are executed on the remote server rather than your local machine.
 
+## Important Commands from This Lesson
+
+| Command | Purpose |
+|---|---|
+| `mkdir -p ~/.ssh/keys` | Create a dedicated directory for storing private key files. |
+| `mv ~/Downloads/KEY.pem ~/.ssh/keys/` | Move a downloaded private key into that directory. |
+| `ssh -i ~/.ssh/keys/KEY.pem ubuntu@IP` | Connect to an EC2 instance, authenticating with a private key instead of a password. |
+| `chmod 400 ~/.ssh/keys/KEY.pem` | Restrict a private key file to read-only access by its owner, as required by SSH. |
+
 ---
 
-# Key Concepts Covered
+## Key Takeaways
 
 * AWS Free Tier usage
 * Root account security with MFA
@@ -1188,9 +1311,9 @@ At this point, you are connected directly to the EC2 instance, and all commands 
 
 ---
 
-# 1.6 SSH Productivity, Key Management, and File Transfers
+# Module 1 - Lesson 6: SSH Productivity, Key Management, and File Transfers
 
-## SSH Configuration File (`~/.ssh/config`)
+## 1. SSH Configuration File (`~/.ssh/config`)
 
 Typing the full SSH command every time can become repetitive and error-prone:
 
@@ -1242,7 +1365,7 @@ This approach becomes particularly valuable when managing multiple environments 
 
 ---
 
-## Generating SSH Key Pairs with `ssh-keygen`
+## 2. Generating SSH Key Pairs with `ssh-keygen`
 
 While cloud providers often generate SSH keys during instance creation, administrators typically maintain their own personal key pairs for consistent access across environments.
 
@@ -1274,11 +1397,11 @@ You will also be prompted to configure a passphrase, which adds an additional la
 ~/.ssh/id_ed25519.pub   # Public key
 ```
 
-> Never share the private key. The public key can be safely distributed to systems that should trust your identity.
+> **Warning:** Never share the private key. The public key can be safely distributed to systems that should trust your identity.
 
 ---
 
-## Installing a Public Key on a Remote Server
+## 3. Installing a Public Key on a Remote Server
 
 SSH public key authentication requires the public key to be stored in the remote user's `authorized_keys` file.
 
@@ -1321,11 +1444,11 @@ Future connections can then use your personal SSH key instead of the AWS-generat
 
 ---
 
-# Secure File Transfers with SCP
+## 4. Secure File Transfers with SCP
 
 `scp` (Secure Copy) uses SSH to transfer files securely between systems.
 
-## Uploading a File
+## 5. Uploading a File
 
 ```bash
 scp -i ~/.ssh/keys/linux-lab.pem file.txt ubuntu@54.123.45.67:/home/ubuntu/
@@ -1339,7 +1462,7 @@ scp file.txt aws-lab:/home/ubuntu/
 
 ---
 
-## Downloading a File
+## 6. Downloading a File
 
 ```bash
 scp aws-lab:/var/log/syslog ./syslog-backup.log
@@ -1347,7 +1470,7 @@ scp aws-lab:/var/log/syslog ./syslog-backup.log
 
 ---
 
-## Copying Directories Recursively
+## 7. Copying Directories Recursively
 
 ```bash
 scp -r my-directory/ aws-lab:/home/ubuntu/
@@ -1357,7 +1480,7 @@ The `-r` option enables recursive directory transfers.
 
 ---
 
-# Efficient Synchronization with rsync
+## 8. Efficient Synchronization with rsync
 
 While `scp` copies all files during every transfer, `rsync` synchronizes only the differences between source and destination.
 
@@ -1365,7 +1488,7 @@ This significantly reduces transfer time and bandwidth consumption for large dat
 
 ---
 
-## Installation
+## 9. Installation
 
 ```bash
 sudo apt install rsync -y
@@ -1373,7 +1496,7 @@ sudo apt install rsync -y
 
 ---
 
-## Synchronizing a Local Directory to a Remote Server
+## 10. Synchronizing a Local Directory to a Remote Server
 
 ```bash
 rsync -avz --progress /opt/project/ aws-lab:/opt/project/
@@ -1390,7 +1513,7 @@ rsync -avz --progress /opt/project/ aws-lab:/opt/project/
 
 ---
 
-## Synchronizing from Remote to Local
+## 11. Synchronizing from Remote to Local
 
 ```bash
 rsync -avz aws-lab:/var/log/nginx/ /tmp/nginx-logs/
@@ -1398,7 +1521,7 @@ rsync -avz aws-lab:/var/log/nginx/ /tmp/nginx-logs/
 
 ---
 
-## Excluding Files and Directories
+## 12. Excluding Files and Directories
 
 ```bash
 rsync -avz \
@@ -1411,7 +1534,7 @@ This is commonly used to avoid transferring source control metadata, build artif
 
 ---
 
-## Creating a Mirror Copy
+## 13. Creating a Mirror Copy
 
 ```bash
 rsync -avz --delete /opt/project/ aws-lab:/opt/project/
@@ -1419,11 +1542,11 @@ rsync -avz --delete /opt/project/ aws-lab:/opt/project/
 
 The `--delete` option removes files from the destination that no longer exist in the source.
 
-> Use this option carefully, as deletions are propagated to the target system.
+> **Warning:** Use this option carefully, as deletions are propagated to the target system.
 
 ---
 
-## Performing a Dry Run
+## 14. Performing a Dry Run
 
 Before executing a synchronization operation, especially when using `--delete`, simulate the changes:
 
@@ -1435,7 +1558,7 @@ The `-n` option performs a dry run and displays the actions that would be execut
 
 ---
 
-## Common rsync Use Cases
+## 15. Common rsync Use Cases
 
 `rsync` is widely used for:
 
@@ -1450,38 +1573,34 @@ Because it transfers only changed data and preserves filesystem metadata, it rem
 
 ---
 
-# Summary
+## Important Commands from This Lesson
 
-### Connect Using an SSH Alias
+| Command | Purpose |
+|---|---|
+| `vim ~/.ssh/config` | Edit the SSH client config file to create reusable connection aliases. |
+| `ssh HOST_ALIAS` | Connect using a `Host` alias defined in `~/.ssh/config`. |
+| `ssh-keygen -t ed25519 -C "comment"` | Generate a new Ed25519 SSH key pair. |
+| `ssh-copy-id -i ~/.ssh/id_ed25519.pub user@host` | Copy a public key to a remote host's `authorized_keys` file and set permissions automatically. |
+| `cat ~/.ssh/id_ed25519.pub` | Print a public key so it can be copied manually (e.g. onto an EC2 instance). |
+| `echo "KEY" >> ~/.ssh/authorized_keys` | Append a public key to the authorized keys file by hand. |
+| `scp file.txt user@host:/path` | Upload a file to a remote host over SSH. |
+| `scp user@host:/path/file ./` | Download a file from a remote host over SSH. |
+| `scp -r dir/ user@host:/path` | Copy a directory recursively over SSH. |
+| `sudo apt install rsync -y` | Install `rsync`. |
+| `rsync -avz --progress SRC DEST` | Synchronize only the differences between source and destination, with progress output. |
+| `rsync -avz --exclude='PATTERN' SRC DEST` | Synchronize while excluding matching files or directories. |
+| `rsync -avz --delete SRC DEST` | Mirror the source, removing destination files that no longer exist in the source. |
+| `rsync -avzn SRC DEST` | Dry run: show what `rsync` would do without changing any files. |
 
-```bash
-ssh aws-lab
-```
+---
 
-### Generate an SSH Key Pair
+## Key Takeaways
 
-```bash
-ssh-keygen -t ed25519 -C "your-email@example.com"
-```
-
-### Install a Public Key on a Remote Server
-
-```bash
-ssh-copy-id -i ~/.ssh/id_ed25519.pub user@server
-```
-
-### Transfer Files with SCP
-
-```bash
-scp file.txt server:/destination
-```
-
-### Synchronize Data with rsync
-
-```bash
-rsync -avz source destination
-```
-
-`rsync` is generally the preferred solution for deployments, backups, and large-scale file synchronization tasks.
+* An SSH config file (`~/.ssh/config`) lets you define per-host aliases (`Host`, `HostName`, `User`, `IdentityFile`) so you can connect with a short name instead of retyping the full `ssh -i ... user@ip` command every time.
+* `ssh-keygen` generates a personal key pair (Ed25519 is the modern default); the private key must never be shared, while the public key can be freely distributed to systems that should trust your identity.
+* `ssh-copy-id` is the standard way to install your public key on a remote server's `authorized_keys` file; on providers like AWS EC2 that don't support it directly, the key can instead be appended manually after connecting with the original `.pem` key.
+* `scp` copies files and directories (with `-r`) over SSH, transferring the full content every time.
+* `rsync` synchronizes only the differences between source and destination, making it far more efficient than `scp` for large or repeated transfers: `-a` preserves metadata, `-z` compresses, `--exclude` skips unwanted paths, `--delete` mirrors the source exactly, and `-n` previews changes without applying them.
+* Because of its efficiency and the `--delete`/dry-run safety net, `rsync` is generally the preferred tool for deployments, backups, and large-scale file synchronization in Linux administration and SRE work.
 
 ---
