@@ -10,7 +10,7 @@ The training goes beyond basic Linux administration and focuses on the skills re
 
 ## Topics Covered
 
-### Module 01 - Hybrid Lab Environment and SSH
+### [Module 01 - Hybrid Lab Environment and SSH](./01%20-%20Hybrid%20Lab%20Environment%20and%20SSH/README.md)
 
 * Cloud-native mindset
 * Linux server fundamentals
@@ -19,7 +19,7 @@ The training goes beyond basic Linux administration and focuses on the skills re
 * AWS EC2 basics
 * SSH fundamentals
 
-### Module 02 - Shell Survival
+### [Module 02 - Shell Survival](./02%20-%20Shell%20Survival/README.md)
 
 * Linux shell fundamentals
 * Navigation commands
@@ -27,7 +27,7 @@ The training goes beyond basic Linux administration and focuses on the skills re
 * Command-line productivity
 * Terminal usage best practices
 
-### Module 03 - Text Editors
+### [Module 03 - Text Editors](./03%20-%20Text%20Editors/README.md)
 
 * Vim fundamentals
 * Nano basics
@@ -133,7 +133,7 @@ By completing the labs and exercises documented in this repository, the followin
 
 This repository is for educational purposes only.
 While it follows best practices, it may not reflect production-grade configurations.
-Always validate your setup and consult the official Prometheus documentation for deployment-critical environments.
+Always validate your setup and consult the official documentation for deployment-critical environments.
 
 ## Credits
 
