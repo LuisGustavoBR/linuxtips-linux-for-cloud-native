@@ -30,7 +30,6 @@ The training goes beyond basic Linux administration and focuses on the skills re
 ### [Module 03 - Text Editors](./03%20-%20Text%20Editors/README.md)
 
 * Vim fundamentals
-* Nano basics
 * File editing techniques
 * Text manipulation
 * Editor productivity tips
