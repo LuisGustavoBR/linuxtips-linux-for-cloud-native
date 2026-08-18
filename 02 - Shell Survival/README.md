@@ -1,6 +1,185 @@
-# Module 2 - Lesson 1: Exploring the Linux Filesystem
+# Module 2: Shell Survival
 
 ## Overview
+
+Working effectively in a Linux environment means being comfortable at the shell: knowing how the filesystem is organized, moving around it quickly, managing files and directories, customizing the terminal, finding what you need, and packing/unpacking data for storage or transfer.
+
+This module builds those skills from the ground up, across seven lessons: the Linux filesystem hierarchy, command-line navigation, file and directory management, terminal shortcuts and Bash configuration, finding files and directories, archiving and compression, and symbolic links, hard links, inodes, and shell productivity.
+
+## Table of Contents
+
+- [Lesson 1: Exploring the Linux Filesystem](#lesson-1-exploring-the-linux-filesystem)
+  - [1. Linux Is a Kernel, Not a Complete Operating System](#1-linux-is-a-kernel-not-a-complete-operating-system)
+  - [2. What Is a Linux Distribution?](#2-what-is-a-linux-distribution)
+  - [3. Why Alpine Linux?](#3-why-alpine-linux)
+  - [4. Navigating the Filesystem](#4-navigating-the-filesystem)
+  - [5. Special Directory Entries](#5-special-directory-entries)
+  - [6. Understanding `ls -l`](#6-understanding-ls--l)
+  - [7. Symbolic Links](#7-symbolic-links)
+  - [8. Linux File Permissions](#8-linux-file-permissions)
+  - [9. The `/bin` Directory](#9-the-bin-directory)
+  - [10. BusyBox](#10-busybox)
+  - [11. The `/dev` Directory](#11-the-dev-directory)
+  - [12. The `/etc` Directory](#12-the-etc-directory)
+  - [13. The `/home` Directory](#13-the-home-directory)
+  - [14. The `/root` Directory](#14-the-root-directory)
+  - [15. The `/lib` Directory](#15-the-lib-directory)
+  - [16. The `/media` Directory](#16-the-media-directory)
+  - [17. The `/mnt` Directory](#17-the-mnt-directory)
+  - [18. The `/opt` Directory](#18-the-opt-directory)
+  - [19. The `/proc` Directory](#19-the-proc-directory)
+  - [20. The `/run` Directory](#20-the-run-directory)
+  - [21. The `/sbin` Directory](#21-the-sbin-directory)
+  - [22. The `/sys` Directory](#22-the-sys-directory)
+  - [23. The `/tmp` Directory](#23-the-tmp-directory)
+  - [24. The `/usr` Directory](#24-the-usr-directory)
+  - [25. The `/var` Directory](#25-the-var-directory)
+  - [Important Commands from This Lesson](#important-commands-from-this-lesson)
+  - [Key Takeaways](#key-takeaways)
+- [Lesson 2: Command-Line Navigation](#lesson-2-command-line-navigation)
+  - [1. The Linux Shell](#1-the-linux-shell)
+  - [2. Navigating Directories](#2-navigating-directories)
+  - [3. Absolute Paths](#3-absolute-paths)
+  - [4. Relative Paths](#4-relative-paths)
+  - [5. Current and Parent Directory References](#5-current-and-parent-directory-references)
+  - [6. Combining Relative Paths](#6-combining-relative-paths)
+  - [7. Switching to the Previous Directory](#7-switching-to-the-previous-directory)
+  - [8. Returning to the Home Directory](#8-returning-to-the-home-directory)
+  - [9. Listing Directory Contents](#9-listing-directory-contents)
+  - [10. Human-Readable Sizes](#10-human-readable-sizes)
+  - [11. Hidden Files](#11-hidden-files)
+  - [12. Combining `ls` Options](#12-combining-ls-options)
+  - [13. Command History](#13-command-history)
+  - [14. Clearing the Terminal](#14-clearing-the-terminal)
+  - [15. Tab Completion](#15-tab-completion)
+  - [16. Practical Navigation Example](#16-practical-navigation-example)
+  - [Important Commands from This Lesson](#important-commands-from-this-lesson-1)
+  - [Key Takeaways](#key-takeaways-1)
+- [Lesson 3: File and Directory Management](#lesson-3-file-and-directory-management)
+  - [1. Creating Directories](#1-creating-directories)
+  - [2. Creating Nested Directories](#2-creating-nested-directories)
+  - [3. Creating Empty Files](#3-creating-empty-files)
+  - [4. Copying Files and Directories](#4-copying-files-and-directories)
+  - [5. Moving Files and Directories](#5-moving-files-and-directories)
+  - [6. Removing Files and Directories](#6-removing-files-and-directories)
+  - [7. Removing Directories Recursively](#7-removing-directories-recursively)
+  - [8. The Danger of `rm -rf /`](#8-the-danger-of-rm--rf-)
+  - [9. Practice](#9-practice)
+  - [Important Commands from This Lesson](#important-commands-from-this-lesson-2)
+  - [Key Takeaways](#key-takeaways-2)
+- [Lesson 4: Terminal Shortcuts, Aliases, and Bash Configuration](#lesson-4-terminal-shortcuts-aliases-and-bash-configuration)
+  - [1. Terminal Shortcuts](#1-terminal-shortcuts)
+  - [2. Ctrl + R - Search the Command History](#2-ctrl--r---search-the-command-history)
+  - [3. Ctrl + W - Delete a Word](#3-ctrl--w---delete-a-word)
+  - [4. Ctrl + U - Delete the Line](#4-ctrl--u---delete-the-line)
+  - [5. Ctrl + A and Ctrl + E](#5-ctrl--a-and-ctrl--e)
+  - [6. Ctrl + C - Interrupt a Command](#6-ctrl--c---interrupt-a-command)
+  - [7. Ctrl + D - Exit the Shell](#7-ctrl--d---exit-the-shell)
+  - [8. Aliases](#8-aliases)
+  - [9. Viewing Aliases](#9-viewing-aliases)
+  - [10. Aliases Are Temporary](#10-aliases-are-temporary)
+  - [11. Bash and Its Configuration Files](#11-bash-and-its-configuration-files)
+  - [12. `.bash_history`](#12-bash_history)
+  - [13. `.bashrc`](#13-bashrc)
+  - [14. `.bash_logout`](#14-bash_logout)
+  - [15. `echo`](#15-echo)
+  - [16. Redirection with `>`](#16-redirection-with-)
+  - [17. Redirection with `>>`](#17-redirection-with-)
+  - [18. Adding an Alias to `.bashrc`](#18-adding-an-alias-to-bashrc)
+  - [19. `cat`](#19-cat)
+  - [20. `source`](#20-source)
+  - [21. `sudo`](#21-sudo)
+  - [22. Why Use `sudo`?](#22-why-use-sudo)
+  - [23. Aliases with `sudo`](#23-aliases-with-sudo)
+  - [24. Alpine vs Debian](#24-alpine-vs-debian)
+  - [25. Practice](#25-practice)
+  - [Important Commands from This Lesson](#important-commands-from-this-lesson-3)
+  - [Key Takeaways](#key-takeaways-3)
+- [Lesson 5: Finding Files and Directories in Linux](#lesson-5-finding-files-and-directories-in-linux)
+  - [1. Revisiting Previous Lessons](#1-revisiting-previous-lessons)
+  - [2. Metacharacters and Wildcards](#2-metacharacters-and-wildcards)
+  - [3. Brace Expansion](#3-brace-expansion)
+  - [4. The Asterisk Wildcard](#4-the-asterisk-wildcard)
+  - [5. Using `*` with Other Commands](#5-using--with-other-commands)
+  - [6. The Question Mark Wildcard](#6-the-question-mark-wildcard)
+  - [7. Character Sets with `[ ]`](#7-character-sets-with--)
+  - [8. Filename Substitution with Braces](#8-filename-substitution-with-braces)
+  - [9. The `find` Command](#9-the-find-command)
+  - [10. Searching the Entire Filesystem](#10-searching-the-entire-filesystem)
+  - [11. Using Wildcards with `find`](#11-using-wildcards-with-find)
+  - [12. Searching by File Type](#12-searching-by-file-type)
+  - [13. Understanding File Types](#13-understanding-file-types)
+  - [14. Searching by File Size](#14-searching-by-file-size)
+  - [15. Searching by Modification Time](#15-searching-by-modification-time)
+  - [16. Deleting Files with `find`](#16-deleting-files-with-find)
+  - [17. Executing Commands with `find`](#17-executing-commands-with-find)
+  - [18. Using `echo` with `find`](#18-using-echo-with-find)
+  - [19. `find` vs `-delete`](#19-find-vs--delete)
+  - [20. Case Sensitivity](#20-case-sensitivity)
+  - [21. Case-Insensitive Search](#21-case-insensitive-search)
+  - [22. The `file` Command](#22-the-file-command)
+  - [23. Listing a Directory vs the Directory Itself](#23-listing-a-directory-vs-the-directory-itself)
+  - [24. The `which` Command](#24-the-which-command)
+  - [25. Practical Exercise](#25-practical-exercise)
+  - [Important Commands from This Lesson](#important-commands-from-this-lesson-4)
+  - [26. Important Wildcards and Metacharacters](#26-important-wildcards-and-metacharacters)
+  - [27. `find` Options to Remember](#27-find-options-to-remember)
+  - [Lesson Review](#lesson-review)
+  - [28. Final Practice Challenge](#28-final-practice-challenge)
+  - [Key Takeaways](#key-takeaways-4)
+- [Lesson 6: Archiving and Compression](#lesson-6-archiving-and-compression)
+  - [1. Archiving vs. Compression](#1-archiving-vs-compression)
+  - [2. TAR](#2-tar)
+  - [3. Creating a TAR Archive](#3-creating-a-tar-archive)
+  - [4. Creating a TAR.GZ Archive](#4-creating-a-targz-archive)
+  - [5. TAR File Size](#5-tar-file-size)
+  - [6. Listing the Contents of an Archive](#6-listing-the-contents-of-an-archive)
+  - [7. Extracting a TAR.GZ Archive](#7-extracting-a-targz-archive)
+  - [8. Extracting to a Specific Directory](#8-extracting-to-a-specific-directory)
+  - [9. BZIP2 Compression](#9-bzip2-compression)
+  - [10. GZIP](#10-gzip)
+  - [11. GZIP Compression Levels](#11-gzip-compression-levels)
+  - [12. BZIP2](#12-bzip2)
+  - [13. Comparing GZIP and BZIP2](#13-comparing-gzip-and-bzip2)
+  - [14. Creating Test Files with DD](#14-creating-test-files-with-dd)
+  - [15. Testing Compression Performance with TIME](#15-testing-compression-performance-with-time)
+  - [16. Backups and Compression](#16-backups-and-compression)
+  - [17. Commands to Practice](#17-commands-to-practice)
+  - [Important Commands from This Lesson](#important-commands-from-this-lesson-5)
+  - [Key Takeaways](#key-takeaways-5)
+- [Lesson 7: Symbolic Links, Hard Links, Inodes, and Shell Productivity](#lesson-7-symbolic-links-hard-links-inodes-and-shell-productivity)
+  - [1. Quick Review from Lessons 1-3](#1-quick-review-from-lessons-1-3)
+  - [2. What Is a Link?](#2-what-is-a-link)
+  - [3. Symbolic Links](#3-symbolic-links)
+  - [4. Understanding Inodes](#4-understanding-inodes)
+  - [5. Why Inodes Matter](#5-why-inodes-matter)
+  - [6. Checking Inodes](#6-checking-inodes)
+  - [7. Creating a Test File](#7-creating-a-test-file)
+  - [8. Creating Large Test Files with `dd`](#8-creating-large-test-files-with-dd)
+  - [9. Creating a Test Directory Structure](#9-creating-a-test-directory-structure)
+  - [10. Hard Links](#10-hard-links)
+  - [11. Creating a Hard Link](#11-creating-a-hard-link)
+  - [12. Symbolic Link vs Hard Link](#12-symbolic-link-vs-hard-link)
+  - [13. The Main Difference](#13-the-main-difference)
+  - [14. Why Hard Links Cannot Cross Filesystems](#14-why-hard-links-cannot-cross-filesystems)
+  - [15. What Happens When We Delete a Hard Link?](#15-what-happens-when-we-delete-a-hard-link)
+  - [16. Understanding Link Counts](#16-understanding-link-counts)
+  - [17. Using `man`](#17-using-man)
+  - [18. Symbolic Links in `ls`](#18-symbolic-links-in-ls)
+  - [19. Hard Links in `ls`](#19-hard-links-in-ls)
+  - [20. Shell Productivity: Tab Completion](#20-shell-productivity-tab-completion)
+  - [21. Command History](#21-command-history)
+  - [22. Aliases](#22-aliases)
+  - [23. Making an Alias Persistent](#23-making-an-alias-persistent)
+  - [24. Reloading `.bashrc`](#24-reloading-bashrc)
+  - [25. ZSH and Other Shells](#25-zsh-and-other-shells)
+  - [Important Commands from This Lesson](#important-commands-from-this-lesson-6)
+  - [26. Practice Challenge](#26-practice-challenge)
+  - [Key Takeaways](#key-takeaways-6)
+
+---
+
+# Lesson 1: Exploring the Linux Filesystem
 
 Understanding the Linux filesystem hierarchy is one of the most important skills for anyone working with Linux, Cloud, DevOps, or Kubernetes.
 
@@ -8,7 +187,7 @@ In this lesson, you'll explore the purpose of the most important system director
 
 ---
 
-# Linux Is a Kernel, Not a Complete Operating System
+## 1. Linux Is a Kernel, Not a Complete Operating System
 
 A common misconception is that Linux itself is a complete operating system.
 
@@ -27,7 +206,7 @@ This combination forms what is known as a **Linux distribution**.
 
 ---
 
-# What Is a Linux Distribution?
+## 2. What Is a Linux Distribution?
 
 A Linux distribution packages the Linux kernel together with the software required to create a fully functional operating system.
 
@@ -46,7 +225,7 @@ Each distribution targets different use cases, from desktop systems to enterpris
 
 ---
 
-# Why Alpine Linux?
+## 3. Why Alpine Linux?
 
 Throughout this course, many examples use **Alpine Linux**.
 
@@ -62,7 +241,7 @@ Unlike traditional server distributions, Alpine installs only the components nec
 
 ---
 
-# Navigating the Filesystem
+## 4. Navigating the Filesystem
 
 The following commands are used frequently while exploring the filesystem:
 
@@ -83,7 +262,7 @@ Tab         Auto-complete commands and paths
 
 ---
 
-# Special Directory Entries
+## 5. Special Directory Entries
 
 Every directory contains two special entries:
 
@@ -110,7 +289,7 @@ These entries are fundamental to filesystem navigation.
 
 ---
 
-# Understanding `ls -l`
+## 6. Understanding `ls -l`
 
 The long listing format provides detailed information about files.
 
@@ -140,7 +319,7 @@ If the file is a symbolic link, the destination is also displayed.
 
 ---
 
-# Symbolic Links
+## 7. Symbolic Links
 
 A symbolic link is similar to a shortcut in other operating systems.
 
@@ -167,7 +346,7 @@ The first character in the permission field identifies the file type:
 
 ---
 
-# Linux File Permissions
+## 8. Linux File Permissions
 
 A permission string contains ten characters.
 
@@ -200,7 +379,7 @@ Permission management is covered in detail later in the course.
 
 ---
 
-# The `/bin` Directory
+## 9. The `/bin` Directory
 
 The `/bin` directory contains essential executable programs required by all users.
 
@@ -222,7 +401,7 @@ On Alpine Linux, many of these commands are symbolic links pointing to the **Bus
 
 ---
 
-# BusyBox
+## 10. BusyBox
 
 BusyBox is a single executable that provides hundreds of standard Linux utilities.
 
@@ -238,7 +417,7 @@ BusyBox is one of the reasons Alpine images are significantly smaller than most 
 
 ---
 
-# The `/dev` Directory
+## 11. The `/dev` Directory
 
 Everything in Linux is represented as a file—including hardware devices.
 
@@ -246,7 +425,7 @@ The `/dev` directory contains device files that allow applications to communicat
 
 There are two main device types.
 
-## Character Devices
+### Character Devices
 
 Character devices transfer data as a continuous stream.
 
@@ -264,7 +443,7 @@ c
 
 ---
 
-## Block Devices
+### Block Devices
 
 Block devices store data in fixed-size blocks.
 
@@ -282,7 +461,7 @@ b
 
 ---
 
-## Terminal Devices (`tty`)
+### Terminal Devices (`tty`)
 
 Linux terminals are also represented as device files.
 
@@ -297,7 +476,7 @@ These are **character devices**, since they exchange streams of characters rathe
 
 ---
 
-# The `/etc` Directory
+## 12. The `/etc` Directory
 
 The `/etc` directory stores system-wide configuration files.
 
@@ -321,7 +500,7 @@ The `/etc` directory is one of the most important locations for Linux administra
 
 ---
 
-# The `/home` Directory
+## 13. The `/home` Directory
 
 Each regular user has a personal home directory under `/home`.
 
@@ -343,7 +522,7 @@ The root user's home directory is **not** located here.
 
 ---
 
-# The `/root` Directory
+## 14. The `/root` Directory
 
 The root user's home directory is:
 
@@ -355,7 +534,7 @@ This directory is reserved exclusively for the system administrator.
 
 ---
 
-# The `/lib` Directory
+## 15. The `/lib` Directory
 
 The `/lib` directory stores shared libraries required by executables.
 
@@ -371,7 +550,7 @@ Removing essential libraries from this directory can prevent the system from fun
 
 ---
 
-## Kernel Modules
+### Kernel Modules
 
 Kernel modules are typically stored under:
 
@@ -390,7 +569,7 @@ Modules can be loaded dynamically without rebuilding the kernel.
 
 ---
 
-# The `/media` Directory
+## 16. The `/media` Directory
 
 The `/media` directory is commonly used for automatically mounted removable media, such as:
 
@@ -402,7 +581,7 @@ Desktop environments typically manage this directory automatically.
 
 ---
 
-# The `/mnt` Directory
+## 17. The `/mnt` Directory
 
 The `/mnt` directory is intended for temporary mount points created by administrators.
 
@@ -414,7 +593,7 @@ Examples include mounting:
 
 ---
 
-# The `/opt` Directory
+## 18. The `/opt` Directory
 
 Optional third-party software is commonly installed under:
 
@@ -432,7 +611,7 @@ Examples include:
 
 ---
 
-# The `/proc` Directory
+## 19. The `/proc` Directory
 
 The `/proc` directory is a virtual filesystem that exposes real-time kernel and process information.
 
@@ -456,7 +635,7 @@ Unlike regular files, these entries do not permanently exist on disk.
 
 ---
 
-## Process Information
+### Process Information
 
 Every running process has a corresponding directory inside `/proc`.
 
@@ -483,7 +662,7 @@ Displays the command used to start process `1`.
 
 ---
 
-## Process IDs (PID)
+### Process IDs (PID)
 
 Every running process receives a unique **Process ID (PID)**.
 
@@ -499,7 +678,7 @@ On most Linux systems, process `1` is the system's init process (such as `system
 
 ---
 
-# The `/run` Directory
+## 20. The `/run` Directory
 
 The `/run` directory stores runtime data created while the system is operating.
 
@@ -514,7 +693,7 @@ Its contents are recreated after every reboot.
 
 ---
 
-# The `/sbin` Directory
+## 21. The `/sbin` Directory
 
 The `/sbin` directory contains system administration binaries.
 
@@ -529,7 +708,7 @@ These tools are primarily intended for administrative users.
 
 ---
 
-# The `/sys` Directory
+## 22. The `/sys` Directory
 
 Like `/proc`, the `/sys` directory is a virtual filesystem.
 
@@ -545,7 +724,7 @@ Many system management tools interact directly with this filesystem.
 
 ---
 
-# The `/tmp` Directory
+## 23. The `/tmp` Directory
 
 The `/tmp` directory stores temporary files.
 
@@ -559,7 +738,7 @@ Most systems automatically remove its contents after a reboot or periodically th
 
 ---
 
-# The `/usr` Directory
+## 24. The `/usr` Directory
 
 The `/usr` hierarchy contains user-space applications, libraries, documentation, and shared resources.
 
@@ -577,7 +756,7 @@ Software installed manually is commonly placed under `/usr/local`, keeping it se
 
 ---
 
-# The `/var` Directory
+## 25. The `/var` Directory
 
 The `/var` directory stores data that changes frequently during normal system operation.
 
@@ -610,9 +789,25 @@ tail -f /var/log/messages
 
 Log analysis is a fundamental skill for Linux troubleshooting and operations.
 
+## Important Commands from This Lesson
+
+| Command | Purpose |
+|---|---|
+| `pwd` | Print the current working directory. |
+| `ls` / `ls -l` | List directory contents, or in long format with type, permissions, owner, group, size, and date. |
+| `cd` / `cd ..` / `cd .` | Change directory; move to the parent directory; stay in the current directory. |
+| `clear` | Clear the terminal screen. |
+| `cat /etc/hostname` | Display the system's configured hostname. |
+| `cat /proc/cpuinfo` | Display CPU information exposed by the kernel. |
+| `cat /proc/meminfo` | Display memory statistics exposed by the kernel. |
+| `cat /proc/PID/cmdline` | Display the command line used to start a given process. |
+| `ps -ef` | List running processes and their PIDs. |
+| `cat /var/log/messages` | View the contents of a system log file. |
+| `tail -f /var/log/messages` | Follow a system log file in real time. |
+
 ---
 
-# Key Takeaways
+## Key Takeaways
 
 * Linux distributions combine the Linux kernel with user-space utilities and libraries.
 * Alpine Linux is a lightweight distribution widely used for containers and cloud-native workloads.
@@ -623,9 +818,9 @@ Log analysis is a fundamental skill for Linux troubleshooting and operations.
 
 ---
 
-# Module 2 - Lesson 2: Command-Line Navigation
+# Lesson 2: Command-Line Navigation
 
-## The Linux Shell
+## 1. The Linux Shell
 
 The **shell** is a command interpreter that provides an interface between the user and the operating system.
 
@@ -670,7 +865,7 @@ The shell available on a system depends on the distribution and user configurati
 
 ---
 
-# Navigating Directories
+## 2. Navigating Directories
 
 The `cd` command is used to change the current working directory.
 
@@ -696,7 +891,7 @@ The current working directory is important because relative paths are interprete
 
 ---
 
-# Absolute Paths
+## 3. Absolute Paths
 
 An **absolute path** specifies the complete location of a file or directory starting from `/`.
 
@@ -718,7 +913,7 @@ Absolute paths always start with `/`.
 
 ---
 
-# Relative Paths
+## 4. Relative Paths
 
 A **relative path** is interpreted from the current working directory.
 
@@ -740,11 +935,11 @@ Relative paths are particularly useful when navigating nearby directories.
 
 ---
 
-# Current and Parent Directory References
+## 5. Current and Parent Directory References
 
 Two special path references are especially important when working with relative paths.
 
-## Current Directory: `.`
+### Current Directory: `.`
 
 The single dot represents the current directory:
 
@@ -764,7 +959,7 @@ The `.` reference is also useful when specifying the current directory as part o
 
 ---
 
-## Parent Directory: `..`
+### Parent Directory: `..`
 
 The double dot represents the parent directory:
 
@@ -812,7 +1007,7 @@ which takes you to:
 
 ---
 
-# Combining Relative Paths
+## 6. Combining Relative Paths
 
 Relative paths can combine `.` and `..` references.
 
@@ -832,7 +1027,7 @@ This allows you to navigate through the filesystem without specifying the comple
 
 ---
 
-# Switching to the Previous Directory
+## 7. Switching to the Previous Directory
 
 The following command returns to the previously visited directory:
 
@@ -858,7 +1053,7 @@ This is useful when working alternately between two locations.
 
 ---
 
-# Returning to the Home Directory
+## 8. Returning to the Home Directory
 
 Running `cd` without specifying a path returns to the current user's home directory:
 
@@ -870,7 +1065,7 @@ This provides a convenient way to return to a known location without typing the 
 
 ---
 
-# Listing Directory Contents
+## 9. Listing Directory Contents
 
 The `ls` command lists files and directories.
 
@@ -888,7 +1083,7 @@ The `ls` command supports several useful options.
 
 ---
 
-## Long Format
+### Long Format
 
 Use `-l` to display detailed information:
 
@@ -919,7 +1114,7 @@ File permissions will be covered in more detail later.
 
 ---
 
-# Human-Readable Sizes
+## 10. Human-Readable Sizes
 
 The `-h` option displays file sizes in a human-readable format.
 
@@ -942,7 +1137,7 @@ This option is particularly useful when inspecting files with large sizes.
 
 ---
 
-# Hidden Files
+## 11. Hidden Files
 
 Linux uses a simple convention for hidden files: their names begin with a dot.
 
@@ -970,7 +1165,7 @@ The `-a` option means **all**, including hidden entries.
 
 ---
 
-# Combining `ls` Options
+## 12. Combining `ls` Options
 
 Multiple options can be combined.
 
@@ -1001,7 +1196,7 @@ ls -lah
 
 ---
 
-# Command History
+## 13. Command History
 
 The shell keeps a history of previously executed commands.
 
@@ -1022,7 +1217,7 @@ This is useful when repeating or modifying commands without typing them again.
 
 ---
 
-# Clearing the Terminal
+## 14. Clearing the Terminal
 
 The `clear` command clears the visible contents of the terminal:
 
@@ -1036,7 +1231,7 @@ Clearing the terminal does not delete command history or terminate running proce
 
 ---
 
-# Tab Completion
+## 15. Tab Completion
 
 The `Tab` key provides command and path completion.
 
@@ -1071,7 +1266,7 @@ It can also be used to complete commands and filenames.
 
 ---
 
-# Practical Navigation Example
+## 16. Practical Navigation Example
 
 Consider the following sequence:
 
@@ -1128,9 +1323,9 @@ This demonstrates the difference between absolute and relative navigation.
 
 ---
 
-# Practical Command Reference
+## Important Commands from This Lesson
 
-| Command     | Description                                                |
+| Command     | Purpose                                                     |
 | ----------- | ---------------------------------------------------------- |
 | `cd <path>` | Change the current directory                               |
 | `cd`        | Return to the user's home directory                        |
@@ -1149,7 +1344,7 @@ This demonstrates the difference between absolute and relative navigation.
 
 ---
 
-# Key Concepts
+## Key Takeaways
 
 By the end of this lesson, you should be comfortable with:
 
@@ -1174,9 +1369,9 @@ The goal of this lesson is not simply to memorize commands. Practice navigating 
 
 ---
 
-# Module 2 - Lesson 3: File and Directory Management
+# Lesson 3: File and Directory Management
 
-## Creating Directories
+## 1. Creating Directories
 
 In Linux, the correct terminology is **directory**, rather than folder.
 
@@ -1207,7 +1402,7 @@ These references can be used when navigating the filesystem.
 
 ---
 
-## Creating Nested Directories
+## 2. Creating Nested Directories
 
 By default, `mkdir` creates only the directory specified in the command. If the parent directory does not exist, the command fails.
 
@@ -1236,7 +1431,7 @@ The `-p` option is particularly useful when creating multiple levels of a direct
 
 ---
 
-## Creating Empty Files
+## 3. Creating Empty Files
 
 The `touch` command can be used to create an empty file:
 
@@ -1269,7 +1464,7 @@ giropops/
 
 ---
 
-## Copying Files and Directories
+## 4. Copying Files and Directories
 
 The `cp` command is used to copy files and directories.
 
@@ -1312,7 +1507,7 @@ The key difference is:
 
 ---
 
-## Moving Files and Directories
+## 5. Moving Files and Directories
 
 The `mv` command moves files or directories:
 
@@ -1344,7 +1539,7 @@ This works because, in Linux, renaming an item is essentially changing its direc
 
 ---
 
-## Removing Files and Directories
+## 6. Removing Files and Directories
 
 The `rm` command removes files:
 
@@ -1376,7 +1571,7 @@ If the directory contains files or subdirectories, the command fails.
 
 ---
 
-## Removing Directories Recursively
+## 7. Removing Directories Recursively
 
 To remove a directory and everything inside it, use:
 
@@ -1414,7 +1609,7 @@ This combination is commonly used to recursively remove files and directories wi
 
 ---
 
-## The Danger of `rm -rf /`
+## 8. The Danger of `rm -rf /`
 
 The root directory `/` represents the top of the Linux filesystem hierarchy.
 
@@ -1426,7 +1621,7 @@ For example:
 rm -rf /
 ```
 
-This should **never** be executed on a real system.
+> **Warning:** This should **never** be executed on a real system.
 
 Modern versions of GNU `rm` normally include safeguards such as `--preserve-root`, which prevents accidental recursive deletion of `/`. However, these protections should not be treated as a substitute for verifying commands before execution.
 
@@ -1434,24 +1629,7 @@ When working as `root`, destructive commands require particular care because the
 
 ---
 
-## Command Summary
-
-| Command    | Purpose                                                 |
-| ---------- | ------------------------------------------------------- |
-| `mkdir`    | Create a directory                                      |
-| `mkdir -p` | Create a directory hierarchy, including missing parents |
-| `touch`    | Create an empty file                                    |
-| `cp`       | Copy files                                              |
-| `cp -R`    | Recursively copy directories                            |
-| `mv`       | Move files or directories                               |
-| `mv`       | Rename files or directories                             |
-| `rm`       | Remove files                                            |
-| `rmdir`    | Remove empty directories                                |
-| `rm -R`    | Recursively remove directories and their contents       |
-| `rm -f`    | Force removal without confirmation                      |
-| `rm -rf`   | Recursively and forcibly remove files and directories   |
-
-## Practice
+## 9. Practice
 
 Practice these commands by creating and manipulating your own directory structure.
 
@@ -1469,9 +1647,37 @@ Then create additional directories and files and experiment with copying, moving
 
 The goal is to become comfortable manipulating the Linux filesystem from the command line.
 
+## Important Commands from This Lesson
+
+| Command    | Purpose                                                 |
+| ---------- | ------------------------------------------------------- |
+| `mkdir`    | Create a directory                                      |
+| `mkdir -p` | Create a directory hierarchy, including missing parents |
+| `touch`    | Create an empty file                                    |
+| `cp`       | Copy files                                              |
+| `cp -R`    | Recursively copy directories                            |
+| `mv`       | Move files or directories                               |
+| `mv`       | Rename files or directories                             |
+| `rm`       | Remove files                                            |
+| `rmdir`    | Remove empty directories                                |
+| `rm -R`    | Recursively remove directories and their contents       |
+| `rm -f`    | Force removal without confirmation                      |
+| `rm -rf`   | Recursively and forcibly remove files and directories   |
+
 ---
 
-# Module 2 - Lesson 4: Terminal Shortcuts, Aliases, and Bash Configuration
+## Key Takeaways
+
+* `mkdir` creates a directory; `mkdir -p` also creates any missing parent directories in one command.
+* `touch` creates an empty file (or updates its timestamp if the file already exists).
+* `cp` copies a file, leaving the source untouched; `cp -R` recursively copies a directory and everything inside it.
+* `mv` moves files or directories, and is also how Linux renames them — renaming is just changing a directory entry, not a separate operation.
+* `rm` removes files and `rmdir` removes only empty directories; `rm -R` recursively removes a directory and its contents, and adding `-f` (as in `rm -rf`) forces removal without a confirmation prompt.
+* `rm -rf /` would recursively delete the entire filesystem. Modern `rm` ships safeguards like `--preserve-root`, but those should never replace double-checking the target path before running a destructive command, especially as `root`.
+
+---
+
+# Lesson 4: Terminal Shortcuts, Aliases, and Bash Configuration
 
 ## 1. Terminal Shortcuts
 
@@ -1613,7 +1819,7 @@ It can also be useful when leaving a session started under another user.
 
 ---
 
-# 8. Aliases
+## 8. Aliases
 
 Now we can introduce a very useful shell feature: aliases.
 
@@ -1693,7 +1899,7 @@ This is where `.bashrc` becomes important.
 
 ---
 
-# 11. Bash and Its Configuration Files
+## 11. Bash and Its Configuration Files
 
 Bash is one of the most commonly used shells on Linux systems.
 
@@ -1771,7 +1977,7 @@ It can be used to perform specific actions during logout.
 
 ---
 
-# 15. `echo`
+## 15. `echo`
 
 The `echo` command prints text to the terminal.
 
@@ -1791,7 +1997,7 @@ However, `echo` becomes even more useful when combined with output redirection.
 
 ---
 
-# 16. Redirection with `>`
+## 16. Redirection with `>`
 
 The:
 
@@ -1834,7 +2040,7 @@ The first line was overwritten.
 
 ---
 
-# 17. Redirection with `>>`
+## 17. Redirection with `>>`
 
 When you want to append content to the end of a file, use:
 
@@ -1863,11 +2069,11 @@ The difference is important:
 >>  append
 ```
 
-Be especially careful with this when working with configuration files.
+> **Warning:** Be especially careful with this when working with configuration files.
 
 ---
 
-# 18. Adding an Alias to `.bashrc`
+## 18. Adding an Alias to `.bashrc`
 
 We can combine everything we have learned so far.
 
@@ -1891,7 +2097,7 @@ The alias is now stored in `.bashrc`.
 
 ---
 
-# 19. `cat`
+## 19. `cat`
 
 The `cat` command can be used to display the contents of a file.
 
@@ -1919,7 +2125,7 @@ alias ll='ls -lha'
 
 ---
 
-# 20. `source`
+## 20. `source`
 
 After modifying a configuration file, there is an important detail:
 
@@ -1954,7 +2160,7 @@ ll
 
 ---
 
-# 21. `sudo`
+## 21. `sudo`
 
 Another important Linux concept is `sudo`.
 
@@ -2006,7 +2212,7 @@ We will explore permissions and `sudo` configuration in more detail later in the
 
 ---
 
-# 23. Aliases with `sudo`
+## 23. Aliases with `sudo`
 
 We can also create aliases that execute commands using `sudo`.
 
@@ -2034,7 +2240,7 @@ However, if you want the alias to remain available after logging out, it needs t
 
 ---
 
-# 24. Alpine vs Debian
+## 24. Alpine vs Debian
 
 During the training, we may work with different Linux distributions.
 
@@ -2063,7 +2269,7 @@ These details can affect how certain commands behave.
 
 ---
 
-# 25. Practice
+## 25. Practice
 
 Now it is time to put everything into practice.
 
@@ -2124,7 +2330,7 @@ You should start using these features naturally while working in the terminal.
 
 ---
 
-# Lesson 4 Summary
+## Important Commands from This Lesson
 
 | Resource        | Purpose                                         |
 | --------------- | ----------------------------------------------- |
@@ -2146,13 +2352,20 @@ You should start using these features naturally while working in the terminal.
 | `source`        | Reload a configuration file                     |
 | `sudo`          | Execute commands with administrative privileges |
 
-The goal is to become faster and more comfortable in the Linux terminal while learning how to customize your shell environment.
+---
+
+## Key Takeaways
+
+* Bash's line-editing shortcuts speed up terminal work: `Ctrl + R` searches command history, `Ctrl + W`/`Ctrl + U` delete a word/the whole line, `Ctrl + A`/`Ctrl + E` jump to the start/end of the line, `Ctrl + C` interrupts a running command, and `Ctrl + D` sends EOF to exit the shell.
+* An `alias` is a shortcut for a longer command, but it only lasts for the current shell session unless it is added to a startup file such as `.bashrc`.
+* `~/.bashrc` configures an interactive Bash session (aliases, environment variables, functions, prompt); `~/.bash_history` stores previously executed commands; `~/.bash_logout` runs commands when a login session ends.
+* After editing `.bashrc`, run `source ~/.bashrc` (or the equivalent `. ~/.bashrc`) to reload it into the current session without logging out and back in.
+* `sudo` lets an authorized user run a single command with administrative privileges, avoiding the risks of working as `root` all the time; aliases can also wrap `sudo` commands, e.g. `alias update='sudo apt update'`.
+* Distribution, default shell, and current user can all affect available features and configuration file behavior — for example, Alpine's default `ash` shell differs from Debian's Bash.
 
 ---
 
-# Module 2 - Lesson 5 - Finding Files and Directories in Linux
-
-## 1. Introduction
+# Lesson 5: Finding Files and Directories in Linux
 
 In this lesson, we will learn how to locate files and directories in Linux.
 
@@ -2175,7 +2388,7 @@ Before starting, open your terminal and practice the commands yourself. Do not j
 
 ---
 
-# 2. Revisiting Previous Lessons
+## 1. Revisiting Previous Lessons
 
 Before moving forward, let's review some concepts from the previous lessons.
 
@@ -2298,7 +2511,7 @@ These concepts will help us work more efficiently while practicing the commands 
 
 ---
 
-# 3. Metacharacters and Wildcards
+## 2. Metacharacters and Wildcards
 
 One of the most useful Shell features is the ability to use special characters to represent patterns.
 
@@ -2317,7 +2530,7 @@ These characters allow us to work with many files without specifying every filen
 
 ---
 
-# 4. Brace Expansion
+## 3. Brace Expansion
 
 Let's create a directory for our experiments:
 
@@ -2386,7 +2599,7 @@ This is very useful when creating multiple files or directories with similar nam
 
 ---
 
-# 5. The Asterisk Wildcard
+## 4. The Asterisk Wildcard
 
 The `*` wildcard represents zero or more characters.
 
@@ -2448,7 +2661,7 @@ All of them can match:
 
 ---
 
-# 6. Using `*` with Other Commands
+## 5. Using `*` with Other Commands
 
 Wildcards are not exclusive to `ls`.
 
@@ -2468,9 +2681,7 @@ Be extremely careful with commands such as:
 rm -rf *
 ```
 
-This can remove a large amount of data very quickly.
-
-Always verify what a wildcard matches before performing destructive operations.
+> **Warning:** This can remove a large amount of data very quickly. Always verify what a wildcard matches before performing destructive operations.
 
 A good habit is:
 
@@ -2486,7 +2697,7 @@ rm *.txt
 
 ---
 
-# 7. The Question Mark Wildcard
+## 6. The Question Mark Wildcard
 
 The `?` wildcard represents exactly one character.
 
@@ -2545,7 +2756,7 @@ will match.
 
 ---
 
-# 8. Character Sets with `[ ]`
+## 7. Character Sets with `[ ]`
 
 Square brackets allow us to specify a set or range of characters.
 
@@ -2589,7 +2800,7 @@ The important difference is:
 
 ---
 
-# 9. Filename Substitution with Braces
+## 8. Filename Substitution with Braces
 
 Shell expansion can also be useful when creating alternative filenames.
 
@@ -2617,7 +2828,7 @@ This is a useful Shell trick for quickly creating backups.
 
 ---
 
-# 10. The `find` Command
+## 9. The `find` Command
 
 Now we get to one of the most important commands in this lesson:
 
@@ -2651,7 +2862,7 @@ The result might be:
 
 ---
 
-# 11. Searching the Entire Filesystem
+## 10. Searching the Entire Filesystem
 
 The `/` directory represents the entire filesystem.
 
@@ -2677,7 +2888,7 @@ This cancels the running command.
 
 ---
 
-# 12. Using Wildcards with `find`
+## 11. Using Wildcards with `find`
 
 We can also use wildcards with `find`.
 
@@ -2719,7 +2930,7 @@ This is an important distinction.
 
 ---
 
-# 13. Searching by File Type
+## 12. Searching by File Type
 
 `find` can search for specific types of filesystem objects.
 
@@ -2767,7 +2978,7 @@ b = block device
 
 ---
 
-# 14. Understanding File Types
+## 13. Understanding File Types
 
 We can verify file types with:
 
@@ -2800,7 +3011,7 @@ This connects directly with what we learned in previous lessons.
 
 ---
 
-# 15. Searching by File Size
+## 14. Searching by File Size
 
 `find` can also search based on file size.
 
@@ -2836,7 +3047,7 @@ This is extremely useful when troubleshooting disk usage.
 
 ---
 
-# 16. Searching by Modification Time
+## 15. Searching by Modification Time
 
 Another useful `find` option is:
 
@@ -2879,7 +3090,7 @@ These options become very useful when investigating logs, backups, temporary fil
 
 ---
 
-# 17. Deleting Files with `find`
+## 16. Deleting Files with `find`
 
 `find` can also execute actions on the files it finds.
 
@@ -2891,11 +3102,7 @@ find / -type f -name "giropops" -delete
 
 This searches for matching files and deletes them.
 
-Be extremely careful with `-delete`.
-
-The command does not ask for confirmation.
-
-If the search pattern is wrong, you can delete the wrong files.
+> **Warning:** Be extremely careful with `-delete`. The command does not ask for confirmation. If the search pattern is wrong, you can delete the wrong files.
 
 For this reason, it is usually safer to test the search first:
 
@@ -2903,11 +3110,11 @@ For this reason, it is usually safer to test the search first:
 find / -type f -name "giropops"
 ```
 
-Only after confirming the results should you consider a destructive action.
+> **Warning:** Only after confirming the results should you consider a destructive action.
 
 ---
 
-# 18. Executing Commands with `find`
+## 17. Executing Commands with `find`
 
 A safer and more flexible option is `-exec`.
 
@@ -2949,7 +3156,7 @@ The backslash prevents the Shell from interpreting the semicolon before `find` c
 
 ---
 
-# 19. Using `echo` with `find`
+## 18. Using `echo` with `find`
 
 We can also use `echo` to produce custom output.
 
@@ -2969,7 +3176,7 @@ This is useful when building scripts or creating more readable output.
 
 ---
 
-# 20. `find` vs `-delete`
+## 19. `find` vs `-delete`
 
 The difference is important.
 
@@ -2997,11 +3204,11 @@ Inspect the results
 Then perform the action
 ```
 
-Do not start with destructive commands.
+> **Warning:** Do not start with destructive commands.
 
 ---
 
-# 21. Case Sensitivity
+## 20. Case Sensitivity
 
 Linux is case-sensitive.
 
@@ -3029,7 +3236,7 @@ because the capitalization is different.
 
 ---
 
-# 22. Case-Insensitive Search
+## 21. Case-Insensitive Search
 
 For a case-insensitive search, we can use:
 
@@ -3060,7 +3267,7 @@ The important difference is:
 
 ---
 
-# 23. The `file` Command
+## 22. The `file` Command
 
 Another useful command is:
 
@@ -3089,7 +3296,7 @@ This is useful when the filename or extension does not tell you what the file ac
 
 ---
 
-# 24. Listing a Directory vs the Directory Itself
+## 23. Listing a Directory vs the Directory Itself
 
 There is an important difference between:
 
@@ -3137,7 +3344,7 @@ The `-d` option tells `ls` to operate on the directory itself instead of listing
 
 ---
 
-# 25. The `which` Command
+## 24. The `which` Command
 
 Another useful command for locating programs is:
 
@@ -3175,7 +3382,7 @@ This is useful when troubleshooting PATH issues or determining which executable 
 
 ---
 
-# 26. Practical Exercise
+## 25. Practical Exercise
 
 Create a practice environment:
 
@@ -3275,7 +3482,7 @@ find . -type f -name "*.txt" -exec ls -la {} \;
 
 ---
 
-# 27. Important Commands from This Lesson
+## Important Commands from This Lesson
 
 | Command  | Purpose                                   |
 | -------- | ----------------------------------------- |
@@ -3291,7 +3498,7 @@ find . -type f -name "*.txt" -exec ls -la {} \;
 
 ---
 
-# 28. Important Wildcards and Metacharacters
+## 26. Important Wildcards and Metacharacters
 
 | Pattern   | Meaning                              |
 | --------- | ------------------------------------ |
@@ -3314,7 +3521,7 @@ file-{1..10}.txt
 
 ---
 
-# 29. `find` Options to Remember
+## 27. `find` Options to Remember
 
 These are the options you should become comfortable with:
 
@@ -3340,7 +3547,7 @@ b = block device
 
 ---
 
-# 30. Lesson Review
+## Lesson Review
 
 At this point, you should understand how Linux can work with groups of files using Shell expansion and how `find` can locate files based on different criteria.
 
@@ -3425,7 +3632,7 @@ It helps identify where an executable is located.
 
 ---
 
-# 31. Final Practice Challenge
+## 28. Final Practice Challenge
 
 Do not just read this section. Open the terminal and complete it.
 
@@ -3452,7 +3659,7 @@ Practice these commands until they become natural.
 
 ---
 
-# 32. Key Takeaways
+## Key Takeaways
 
 Remember these concepts:
 
@@ -3483,7 +3690,7 @@ This mindset will become increasingly important as you work with Linux servers, 
 
 ---
 
-# Module 2 - Lesson 6: Archiving and Compression
+# Lesson 6: Archiving and Compression
 
 ## 1. Archiving vs. Compression
 
@@ -3519,7 +3726,7 @@ Archive + Compression = .tar.bz2
 
 ---
 
-# 2. TAR
+## 2. TAR
 
 `tar` is one of the most important commands for working with archives in Linux.
 
@@ -3550,7 +3757,7 @@ Some options are especially important and should be memorized.
 
 ---
 
-# 3. Creating a TAR Archive
+## 3. Creating a TAR Archive
 
 Suppose we have a project with the following structure:
 
@@ -3586,7 +3793,7 @@ It simply packages the files into a single archive.
 
 ---
 
-# 4. Creating a TAR.GZ Archive
+## 4. Creating a TAR.GZ Archive
 
 To create an archive compressed with GZIP:
 
@@ -3625,7 +3832,7 @@ The `.tar` part represents the archive, while `.gz` represents the compression.
 
 ---
 
-# 5. TAR File Size
+## 5. TAR File Size
 
 A TAR archive without compression can be significantly larger than a compressed TAR archive.
 
@@ -3642,7 +3849,7 @@ Some files compress very well, while others are already compressed and may not b
 
 ---
 
-# 6. Listing the Contents of an Archive
+## 6. Listing the Contents of an Archive
 
 The `t` option lists the contents of a TAR archive without extracting it.
 
@@ -3668,7 +3875,7 @@ This is useful when you want to inspect an archive before extracting it.
 
 ---
 
-# 7. Extracting a TAR.GZ Archive
+## 7. Extracting a TAR.GZ Archive
 
 To extract a GZIP-compressed TAR archive:
 
@@ -3689,7 +3896,7 @@ The archive contents will be extracted into the current directory.
 
 ---
 
-# 8. Extracting to a Specific Directory
+## 8. Extracting to a Specific Directory
 
 You can specify where the archive should be extracted.
 
@@ -3705,7 +3912,7 @@ This is useful when you don't want to extract everything into the current direct
 
 ---
 
-# 9. BZIP2 Compression
+## 9. BZIP2 Compression
 
 Another common compression algorithm is **BZIP2**.
 
@@ -3744,7 +3951,7 @@ tar -xjvf backup.tar.bz2
 
 ---
 
-# 10. GZIP
+## 10. GZIP
 
 GZIP can also be used independently of TAR.
 
@@ -3784,7 +3991,7 @@ The original file is restored.
 
 ---
 
-# 11. GZIP Compression Levels
+## 11. GZIP Compression Levels
 
 GZIP supports different compression levels.
 
@@ -3823,7 +4030,7 @@ The best option depends on the use case.
 
 ---
 
-# 12. BZIP2
+## 12. BZIP2
 
 BZIP2 can also be used independently.
 
@@ -3855,7 +4062,7 @@ BZIP2 can provide good compression ratios, but it may require more processing ti
 
 ---
 
-# 13. Comparing GZIP and BZIP2
+## 13. Comparing GZIP and BZIP2
 
 The choice between compression algorithms depends on the situation.
 
@@ -3877,7 +4084,7 @@ You will encounter it frequently when downloading source code, distributing soft
 
 ---
 
-# 14. Creating Test Files with DD
+## 14. Creating Test Files with DD
 
 The `dd` command can be used for many advanced operations in Linux.
 
@@ -3919,7 +4126,7 @@ This is particularly useful when you need a file with a known size to test compr
 
 ---
 
-# 15. Testing Compression Performance with TIME
+## 15. Testing Compression Performance with TIME
 
 Linux provides the `time` command to measure how long a command takes to execute.
 
@@ -3957,7 +4164,7 @@ The actual results depend heavily on the type and size of the data.
 
 ---
 
-# 16. Backups and Compression
+## 16. Backups and Compression
 
 Compression is not always the best choice for every backup scenario.
 
@@ -3981,7 +4188,7 @@ storage efficiency and processing time.
 
 ---
 
-# 17. Commands to Practice
+## 17. Commands to Practice
 
 Create a test directory:
 
@@ -4071,7 +4278,25 @@ time gzip testfile
 
 ---
 
-# Key Takeaways
+## Important Commands from This Lesson
+
+| Command | Purpose |
+| --- | --- |
+| `tar -cvf archive.tar dir/` | Create an uncompressed TAR archive |
+| `tar -czvf archive.tar.gz dir/` | Create a GZIP-compressed TAR archive |
+| `tar -cjvf archive.tar.bz2 dir/` | Create a BZIP2-compressed TAR archive |
+| `tar -tvf archive.tar` / `tar -tzvf archive.tar.gz` | List archive contents without extracting |
+| `tar -xzvf archive.tar.gz` | Extract a GZIP-compressed TAR archive |
+| `tar -xzvf archive.tar.gz -C dir/` | Extract an archive into a specific directory |
+| `gzip file` / `gzip -d file.gz` | Compress / decompress a file with GZIP |
+| `gzip -1` ... `gzip -9` | Set the GZIP compression level (fastest to smallest) |
+| `bzip2 file` / `bzip2 -d file.bz2` | Compress / decompress a file with BZIP2 |
+| `dd if=/dev/zero of=file bs=1M count=N` | Create a test file of a specific size |
+| `time command` | Measure how long a command takes to run |
+
+---
+
+## Key Takeaways
 
 By the end of this lesson, you should understand:
 
@@ -4120,9 +4345,7 @@ Extract
 
 ---
 
-# Module 2 - Lesson 7 - Symbolic Links, Hard Links, Inodes, and Shell Productivity
-
-## 1. Lesson Overview
+# Lesson 7: Symbolic Links, Hard Links, Inodes, and Shell Productivity
 
 In this lesson, we will continue building our Linux shell skills and learn an important filesystem concept:
 
@@ -4142,7 +4365,7 @@ These concepts are very common in Linux administration, DevOps, Cloud, and troub
 
 ---
 
-# 2. Quick Review from Lessons 1-3
+## 1. Quick Review from Lessons 1-3
 
 Before continuing, let's review some commands and concepts we have already learned.
 
@@ -4226,7 +4449,7 @@ Be careful with commands such as:
 rm -rf
 ```
 
-They can recursively remove files and directories without asking for confirmation.
+> **Warning:** They can recursively remove files and directories without asking for confirmation.
 
 ---
 
@@ -4249,7 +4472,7 @@ Press `q` to exit the manual.
 
 ---
 
-# 3. What Is a Link?
+## 2. What Is a Link?
 
 A link is a reference to a file or directory.
 
@@ -4262,7 +4485,7 @@ They look similar from a user's perspective, but they work very differently inte
 
 ---
 
-# 4. Symbolic Links
+## 3. Symbolic Links
 
 A symbolic link, also called a symlink, is similar to a shortcut in Windows.
 
@@ -4292,7 +4515,7 @@ The `-s` means symbolic.
 
 ---
 
-## 4.1 Symbolic Link Behavior
+### 4.1 Symbolic Link Behavior
 
 Suppose we have:
 
@@ -4327,7 +4550,7 @@ This is called a dangling or broken symbolic link.
 
 ---
 
-## 4.2 Modifying Through a Symbolic Link
+### 4.2 Modifying Through a Symbolic Link
 
 If the symbolic link points to a normal file, accessing the link accesses the original file.
 
@@ -4343,7 +4566,7 @@ This is why symbolic links are extremely useful for configuration files, applica
 
 ---
 
-# 5. Understanding Inodes
+## 4. Understanding Inodes
 
 To understand hard links, we first need to understand inodes.
 
@@ -4377,7 +4600,7 @@ giropops -> inode 5320194 -> file data
 
 ---
 
-# 6. Why Inodes Matter
+## 5. Why Inodes Matter
 
 Inodes are finite.
 
@@ -4414,7 +4637,7 @@ This is a common troubleshooting scenario on Linux servers.
 
 ---
 
-# 7. Checking Inodes
+## 6. Checking Inodes
 
 We can use:
 
@@ -4448,7 +4671,7 @@ This is an important command when troubleshooting a filesystem that appears to h
 
 ---
 
-# 8. Creating a Test File
+## 7. Creating a Test File
 
 Let's create a file:
 
@@ -4474,7 +4697,7 @@ A zero-byte file still consumes filesystem metadata.
 
 ---
 
-# 9. Creating Large Test Files with `dd`
+## 8. Creating Large Test Files with `dd`
 
 We can use `dd` to create files with a specific size.
 
@@ -4536,11 +4759,11 @@ Therefore:
 
 `dd` is a powerful command and can be used for much more than creating test files. It can also perform low-level data copying between devices and filesystems.
 
-Be careful with `dd`, especially when writing directly to disks.
+> **Warning:** Be careful with `dd`, especially when writing directly to disks.
 
 ---
 
-# 10. Creating a Test Directory Structure
+## 9. Creating a Test Directory Structure
 
 Let's create a simple structure:
 
@@ -4564,7 +4787,7 @@ You should see the inode number associated with `giropops`.
 
 ---
 
-# 11. Hard Links
+## 10. Hard Links
 
 Now we can introduce the hard link.
 
@@ -4592,7 +4815,7 @@ Therefore, they are effectively two names for the same underlying file.
 
 ---
 
-# 12. Creating a Hard Link
+## 11. Creating a Hard Link
 
 The basic syntax is:
 
@@ -4625,7 +4848,7 @@ This is the key difference.
 
 ---
 
-# 13. Symbolic Link vs Hard Link
+## 12. Symbolic Link vs Hard Link
 
 Let's compare them.
 
@@ -4669,7 +4892,7 @@ hardlink ----/
 
 ---
 
-# 14. The Main Difference
+## 13. The Main Difference
 
 | Feature                        | Symbolic Link | Hard Link |
 | ------------------------------ | ------------- | --------- |
@@ -4685,7 +4908,7 @@ hardlink ----/
 
 ---
 
-# 15. Why Hard Links Cannot Cross Filesystems
+## 14. Why Hard Links Cannot Cross Filesystems
 
 Each filesystem has its own inode table.
 
@@ -4717,7 +4940,7 @@ Therefore, a symbolic link can point to a file located on another filesystem.
 
 ---
 
-# 16. What Happens When We Delete a Hard Link?
+## 15. What Happens When We Delete a Hard Link?
 
 Suppose:
 
@@ -4749,7 +4972,7 @@ It is another name for the same underlying file.
 
 ---
 
-# 17. Understanding Link Counts
+## 16. Understanding Link Counts
 
 Run:
 
@@ -4786,7 +5009,7 @@ The underlying file still exists.
 
 ---
 
-# 18. Using `man`
+## 17. Using `man`
 
 Linux commands usually have detailed manual pages.
 
@@ -4826,7 +5049,7 @@ You need to know how to find the information when you need it.
 
 ---
 
-# 19. Symbolic Links in `ls`
+## 18. Symbolic Links in `ls`
 
 When you run:
 
@@ -4862,7 +5085,7 @@ A normal file does not show this arrow.
 
 ---
 
-# 20. Hard Links in `ls`
+## 19. Hard Links in `ls`
 
 A hard link looks like a normal file:
 
@@ -4884,7 +5107,7 @@ If two filenames have the same inode number, they are hard links to the same und
 
 ---
 
-# 21. Shell Productivity: Tab Completion
+## 20. Shell Productivity: Tab Completion
 
 Another important shell skill is tab completion.
 
@@ -4916,7 +5139,7 @@ Get used to using it constantly.
 
 ---
 
-# 22. Command History
+## 21. Command History
 
 We previously learned:
 
@@ -4952,7 +5175,7 @@ This is one of the most useful shell shortcuts you can learn.
 
 ---
 
-# 23. Aliases
+## 22. Aliases
 
 An alias creates a shortcut for a command.
 
@@ -4984,7 +5207,7 @@ Aliases are useful when a command is long or when you frequently use a particula
 
 ---
 
-# 24. Making an Alias Persistent
+## 23. Making an Alias Persistent
 
 There is an important limitation.
 
@@ -5026,7 +5249,7 @@ Be careful with:
 >
 ```
 
-A single `>` redirects output and overwrites the destination file.
+> **Warning:** A single `>` redirects output and overwrites the destination file.
 
 Therefore:
 
@@ -5038,7 +5261,7 @@ is generally what you want when adding a new configuration line.
 
 ---
 
-# 25. Reloading `.bashrc`
+## 24. Reloading `.bashrc`
 
 After modifying `.bashrc`, you can reload it without closing the terminal:
 
@@ -5064,7 +5287,7 @@ listar
 
 ---
 
-# 26. ZSH and Other Shells
+## 25. ZSH and Other Shells
 
 Not every Linux environment uses Bash.
 
@@ -5098,117 +5321,27 @@ The configuration file depends on the shell.
 
 ---
 
-# 27. Practical Summary
+## Important Commands from This Lesson
 
-At this point, you should understand the following:
-
-### Symbolic link
-
-```bash
-ln -s original symlink
-```
-
-A symbolic link is similar to a shortcut.
-
-It has its own inode and points to another path.
-
----
-
-### Hard link
-
-```bash
-ln original hardlink
-```
-
-A hard link is another directory entry pointing to the same inode.
+| Resource | Purpose |
+| --- | --- |
+| `ln -s original symlink` | Create a symbolic link |
+| `ln original hardlink` | Create a hard link |
+| `ls -li` | Show inode numbers |
+| `df -i` | Check inode usage across filesystems |
+| `man command` | Open the manual page for a command (press `q` to exit) |
+| `touch file` | Create an empty test file |
+| `dd if=/dev/zero of=file bs=10M count=10` | Create a large test file of a specific size |
+| `alias listar='ls -lai'` | Create a temporary alias |
+| `echo "alias listar='ls -lai'" >> ~/.bashrc` | Make an alias persistent |
+| `source ~/.bashrc` | Reload the Bash configuration file |
+| `history` | Display command history |
+| `Ctrl + R` | Search command history interactively |
+| `Tab` | Auto-complete commands, files, and paths |
 
 ---
 
-### Show inode numbers
-
-```bash
-ls -li
-```
-
----
-
-### Check inode usage
-
-```bash
-df -i
-```
-
----
-
-### Manual pages
-
-```bash
-man command
-```
-
-Exit with:
-
-```text
-q
-```
-
----
-
-### Create test files
-
-```bash
-touch file
-```
-
----
-
-### Create large test files
-
-```bash
-dd if=/dev/zero of=file bs=10M count=10
-```
-
----
-
-### Create persistent aliases
-
-```bash
-echo "alias listar='ls -lai'" >> ~/.bashrc
-```
-
-Reload:
-
-```bash
-source ~/.bashrc
-```
-
----
-
-### Search command history
-
-```text
-Ctrl + R
-```
-
-or:
-
-```bash
-history
-```
-
----
-
-### Use tab completion
-
-```text
-Tab
-```
-
-Use it constantly.
-
----
-
-# 28. Practice Challenge
+## 26. Practice Challenge
 
 Now it is time to practice.
 
@@ -5294,7 +5427,7 @@ and investigate the available options.
 
 ---
 
-# 29. Key Takeaways
+## Key Takeaways
 
 The most important concepts from this lesson are:
 
