@@ -8,7 +8,7 @@ This module introduces the foundational concepts behind Linux servers, virtualiz
 
 ## Table of Contents
 
-- [Module 1 - Lesson 1: Cloud-Native Mindset](#module-1---lesson-1-cloud-native-mindset)
+- [Lesson 1: Cloud-Native Mindset](#lesson-1-cloud-native-mindset)
   - [1. Why Linux Matters](#1-why-linux-matters)
   - [2. Linux Desktop vs Linux Server](#2-linux-desktop-vs-linux-server)
   - [3. Understanding Virtualization](#3-understanding-virtualization)
@@ -22,12 +22,12 @@ This module introduces the foundational concepts behind Linux servers, virtualiz
   - [11. Pets](#11-pets)
   - [12. Cattle](#12-cattle)
   - [Key Takeaways](#key-takeaways)
-- [Module 1 - Lesson 2: Local Lab Environment: VirtualBox and Ubuntu Server](#module-1---lesson-2-local-lab-environment-virtualbox-and-ubuntu-server)
+- [Lesson 2: Local Lab Environment: VirtualBox and Ubuntu Server](#lesson-2-local-lab-environment-virtualbox-and-ubuntu-server)
   - [1. Installing VirtualBox](#1-installing-virtualbox)
   - [2. Downloading Ubuntu Server](#2-downloading-ubuntu-server)
   - [3. Why Build a Local Lab?](#3-why-build-a-local-lab)
   - [Key Takeaways](#key-takeaways-1)
-- [Module 1 - Lesson 3: Creating the Virtual Machine and Installing Ubuntu Server](#module-1---lesson-3-creating-the-virtual-machine-and-installing-ubuntu-server)
+- [Lesson 3: Creating the Virtual Machine and Installing Ubuntu Server](#lesson-3-creating-the-virtual-machine-and-installing-ubuntu-server)
   - [1. Creating the Virtual Machine](#1-creating-the-virtual-machine)
   - [2. Network Configuration](#2-network-configuration)
   - [3. Installing Ubuntu Server](#3-installing-ubuntu-server)
@@ -37,7 +37,7 @@ This module introduces the foundational concepts behind Linux servers, virtualiz
   - [7. Optional Software Packages](#7-optional-software-packages)
   - [8. Understanding the First Boot Process](#8-understanding-the-first-boot-process)
   - [Key Takeaways](#key-takeaways-2)
-- [Module 1 - Lesson 4: SSH: The Essential Remote Access Tool](#module-1---lesson-4-ssh-the-essential-remote-access-tool)
+- [Lesson 4: SSH: The Essential Remote Access Tool](#lesson-4-ssh-the-essential-remote-access-tool)
   - [1. What is SSH?](#1-what-is-ssh)
   - [2. Connecting to a Virtual Machine](#2-connecting-to-a-virtual-machine)
   - [3. Initial System Verification](#3-initial-system-verification)
@@ -50,7 +50,7 @@ This module introduces the foundational concepts behind Linux servers, virtualiz
   - [10. Expanding an LVM Volume](#10-expanding-an-lvm-volume)
   - [Important Commands from This Lesson](#important-commands-from-this-lesson)
   - [Key Takeaways](#key-takeaways-3)
-- [Module 1 - Lesson 5: AWS EC2 Lab (Free Tier)](#module-1---lesson-5-aws-ec2-lab-free-tier)
+- [Lesson 5: AWS EC2 Lab (Free Tier)](#lesson-5-aws-ec2-lab-free-tier)
   - [1. Creating an AWS Account](#1-creating-an-aws-account)
   - [2. Securing the AWS Root Account](#2-securing-the-aws-root-account)
   - [3. Understanding Security Groups](#3-understanding-security-groups)
@@ -64,7 +64,7 @@ This module introduces the foundational concepts behind Linux servers, virtualiz
   - [11. Successful Connection](#11-successful-connection)
   - [Important Commands from This Lesson](#important-commands-from-this-lesson-1)
   - [Key Takeaways](#key-takeaways-4)
-- [Module 1 - Lesson 6: SSH Productivity, Key Management, and File Transfers](#module-1---lesson-6-ssh-productivity-key-management-and-file-transfers)
+- [Lesson 6: SSH Productivity, Key Management, and File Transfers](#lesson-6-ssh-productivity-key-management-and-file-transfers)
   - [1. SSH Configuration File (`~/.ssh/config`)](#1-ssh-configuration-file-sshconfig)
   - [2. Generating SSH Key Pairs with `ssh-keygen`](#2-generating-ssh-key-pairs-with-ssh-keygen)
   - [3. Installing a Public Key on a Remote Server](#3-installing-a-public-key-on-a-remote-server)
@@ -85,7 +85,7 @@ This module introduces the foundational concepts behind Linux servers, virtualiz
 
 ---
 
-# Module 1 - Lesson 1: Cloud-Native Mindset
+# Lesson 1: Cloud-Native Mindset
 
 ## 1. Why Linux Matters
 
@@ -359,7 +359,7 @@ The goal is to make infrastructure reproducible, scalable, and resilient rather 
 
 ---
 
-# Module 1 - Lesson 2: Local Lab Environment: VirtualBox and Ubuntu Server
+# Lesson 2: Local Lab Environment: VirtualBox and Ubuntu Server
 
 ## 1. Installing VirtualBox
 
@@ -457,7 +457,7 @@ The primary difference is the hosting location; the underlying operating system 
 
 ---
 
-# Module 1 - Lesson 3: Creating the Virtual Machine and Installing Ubuntu Server
+# Lesson 3: Creating the Virtual Machine and Installing Ubuntu Server
 
 ## 1. Creating the Virtual Machine
 
@@ -784,7 +784,7 @@ After logging in, the Linux server is ready for administration and remote access
 
 ---
 
-# Module 1 - Lesson 4: SSH: The Essential Remote Access Tool
+# Lesson 4: SSH: The Essential Remote Access Tool
 
 With both your local VM and cloud instance running, the next step is connecting to them remotely using SSH.
 
@@ -1038,7 +1038,7 @@ One of the key advantages of LVM is the ability to expand storage volumes dynami
 
 ---
 
-# Module 1 - Lesson 5: AWS EC2 Lab (Free Tier)
+# Lesson 5: AWS EC2 Lab (Free Tier)
 
 A local environment is essential for learning Linux and DevOps fundamentals, but real-world experience requires working with cloud infrastructure. AWS EC2 provides an ideal platform for practicing server administration, networking, and remote access in a production-like environment.
 
@@ -1311,7 +1311,7 @@ At this point, you are connected directly to the EC2 instance, and all commands 
 
 ---
 
-# Module 1 - Lesson 6: SSH Productivity, Key Management, and File Transfers
+# Lesson 6: SSH Productivity, Key Management, and File Transfers
 
 ## 1. SSH Configuration File (`~/.ssh/config`)
 
