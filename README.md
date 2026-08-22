@@ -34,7 +34,7 @@ The training goes beyond basic Linux administration and focuses on the skills re
 * Text manipulation
 * Editor productivity tips
 
-### Module 04 - Users, Groups and Security
+### [Module 04 - Users, Groups and Security](./04%20-%20Users%2C%20Groups%20and%20Security/README.md)
 
 * User management
 * Group management
